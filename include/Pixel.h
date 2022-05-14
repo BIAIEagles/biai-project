@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 
+namespace SOM {
 class Pixel {
    private:
     uint8_t brightness;
@@ -22,3 +23,4 @@ class Pixel {
 
     void setRedChroma(uint8_t red_chroma);
 };
+}  // namespace SOM

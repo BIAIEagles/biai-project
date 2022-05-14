@@ -1,4 +1,6 @@
 #pragma once
+
+namespace SOM {
 class SOMNetwork {
    private:
     /* data */
@@ -6,7 +8,4 @@ class SOMNetwork {
     SOMNetwork();
     ~SOMNetwork();
 };
-
-SOMNetwork::SOMNetwork() {}
-
-SOMNetwork::~SOMNetwork() {}
+}  // namespace SOM

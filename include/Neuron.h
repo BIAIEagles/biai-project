@@ -2,6 +2,7 @@
 
 #include <vector>
 
+namespace SOM {
 class Neuron {
    private:
     std::vector<double> weights;
@@ -17,3 +18,4 @@ class Neuron {
     std::vector<double> getWeights();
     unsigned long getWinnerCount();
 };
+}
