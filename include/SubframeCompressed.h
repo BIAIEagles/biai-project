@@ -15,10 +15,10 @@ class SubframeCompressed {
     uint8_t blueChromaValue;
 
    public:
-    Subframe();
-    Subframe(int lumaWinnerIndex, int redChromaWinnerIndex,
-             int blueChromaWinnerIndex, uint8_t lumaValue,
-             uint8_t redChromaValue, uint8_t blueChromaValue);
+    SubframeCompressed();
+    SubframeCompressed(int lumaWinnerIndex, int redChromaWinnerIndex,
+                       int blueChromaWinnerIndex, uint8_t lumaValue,
+                       uint8_t redChromaValue, uint8_t blueChromaValue);
     void setLumaValue(uint8_t lumaValue);
     uint8_t getLumaValue();
     void setRedChromaValue(uint8_t redChromaValue);
