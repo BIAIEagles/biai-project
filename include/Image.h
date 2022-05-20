@@ -17,6 +17,7 @@ class Image {
     Image(cv::Mat BGRImageHandle);
     void setBGRImageHandle(std::string filename);
     void transformBGR2YCbCr();
+    void transformYCbCr2BGR();
     void saveToFile(std::string newFilename);
 };
 }  // namespace SOM

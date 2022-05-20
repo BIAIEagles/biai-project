@@ -1,0 +1,3 @@
+/Users/nixen/Projects/BIAI/biai-project/build/CMakeFiles/SOM-image-compressor.dir
+/Users/nixen/Projects/BIAI/biai-project/build/CMakeFiles/edit_cache.dir
+/Users/nixen/Projects/BIAI/biai-project/build/CMakeFiles/rebuild_cache.dir
