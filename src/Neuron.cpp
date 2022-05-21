@@ -3,6 +3,8 @@
 #include <math.h>
 
 #include <algorithm>
+
+#include "../include/Misc.h"
 using namespace SOM;
 
 Neuron::Neuron(std::vector<double> weights) {
@@ -24,8 +26,7 @@ void Neuron::weightsEvaluation(std::vector<double> input, double step) {
         weights[i] += step * (input[i] - weights[i]);
     }
 
-    // FIXME NORMALIZE
-    this->weights = weights;  // TODO: NORMALIZE VECTOR IMPORTANT!!!!
+    this->weights = normalizeVector<double>(weights);
 }
 
 std::vector<double> Neuron::getWeights() { return this->weights; }

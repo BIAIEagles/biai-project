@@ -13,8 +13,7 @@ class SOMNetwork {
                int minWinnerCounter);
     void processFrame(Subframe frame);
     int findWinnerNeuron(std::vector<double> pixelArray);
-    void evaluateNeouronWeights(int neuronIndex,
-                                std::vector<double> pixelArray);
+    void evaluateNeuronWeights(int neuronIndex, std::vector<double> pixelArray);
     void purgeDeadNeurons();
     std::vector<double> getNeuronWeights(int index);
 };
