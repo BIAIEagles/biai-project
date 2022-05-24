@@ -6,10 +6,12 @@
 #include <functional>
 #include <random>
 #include <vector>
+#include "Subframe.h"
 
 template <class T>
 std::vector<T> normalizeVector(std::vector<T> vector) {
     std::vector<T> resultVector;
+    return vector;
 }
 
 template <class T>
@@ -31,11 +33,12 @@ std::vector<T> generateWeights(int count) {
     for (int i = 0; i < count; i++) {
         weights.push_back(dist(engine));
     }
+    return weights;
 }
 
 template <class T>
 int findMinIndex(std::vector<T> input) {
-    int minVal = std::min_element(input.begin, input.end);
+    int minVal = input.at(std::distance(input.begin(), std::min_element(input.begin(), input.end())));
     int index = 0;
     for (int i = 0; i < input.size(); i++) {
         if (minVal == input[i]) {
@@ -46,10 +49,6 @@ int findMinIndex(std::vector<T> input) {
     return index;
 }
 
-std::vector<int> denormalizeVector(std::vector<double> input, double factor) {
-    std::vector<int> result;
-    for (auto item : input) {
-        result.push_back((int)round(item * factor));
-    }
-    return result;
-}
+std::vector<int> denormalizeVector(std::vector<double> input, double factor);
+
+SOM::Subframe generateRandomSubframe(int x_dim, int y_dim);

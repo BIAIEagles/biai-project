@@ -3,8 +3,6 @@
 #include <math.h>
 
 #include <algorithm>
-
-#include "../include/Misc.h"
 using namespace SOM;
 
 Neuron::Neuron(std::vector<double> weights) {

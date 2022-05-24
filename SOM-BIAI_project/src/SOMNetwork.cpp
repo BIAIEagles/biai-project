@@ -1,7 +1,5 @@
 #include "../include/SOMNetwork.h"
 
-#include "../include/Misc.h"
-
 using namespace SOM;
 
 SOMNetwork::SOMNetwork(int neuronsCount, int weightsCount, double step,

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-
+#include "Misc.h"
 namespace SOM {
 class Neuron {
    private:
