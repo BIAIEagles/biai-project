@@ -8,20 +8,27 @@ namespace SOM {
 class Subframe {
    private:
     std::vector<Pixel> pixelArray;
-    uint8_t lumaValue;
-    uint8_t redChromaValue;
-    uint8_t blueChromaValue;
+    double lumaValue;
+    double redChromaValue;
+    double blueChromaValue;
+    int width;
+    int height;
 
    public:
     Subframe();
     Subframe(std::vector<Pixel> pixelArray);
+    Subframe(std::vector<Pixel> pixelArray, double luma, double redChroma, double blueChroma);
     void setPixelArray(std::vector<Pixel> pixelArray);
     std::vector<Pixel> getPixelArray();
-    void setLumaValue(uint8_t lumaValue);
-    uint8_t getLumaValue();
-    void setRedChromaValue(uint8_t redChromaValue);
-    uint8_t getRedChromaValue();
-    void setBlueChromaValue(uint8_t blueChromaValue);
-    uint8_t getBlueChromaValue();
+    void setLumaValue(double lumaValue);
+    double getLumaValue();
+    void setRedChromaValue(double redChromaValue);
+    double getRedChromaValue();
+    void setBlueChromaValue(double blueChromaValue);
+    double getBlueChromaValue();
+    int getWidth();
+    void setWidth(int width);
+    int getHeight();
+    void setHeight(int height);
 };
 }  // namespace SOM

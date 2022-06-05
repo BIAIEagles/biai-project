@@ -19,12 +19,12 @@ std::vector<T> normalizeVector(std::vector<T> vector) {
 }
 
 template <class T>
-static T euclideanNorm(std::vector<T> input) {
+static double euclideanNorm(std::vector<T> input) {
     T sum = 0;
     for (auto item : input) {
         sum += pow(item, 2);
     }
-    return sqrt(sum);
+    return sqrt(sum * 1.0);
 }
 
 template <class T>
@@ -56,3 +56,10 @@ int findMinIndex(std::vector<T> input) {
 std::vector<int> denormalizeVector(std::vector<double> input, double factor);
 
 std::vector<SOM::Subframe> generateRandomSubframes();
+
+std::vector <std::vector<SOM::Subframe>> convertPixelArrayToSubframes(
+                  std::vector<SOM::Pixel> pixelArray, int dimX, int dimY, int frameDimX, int frameDimY);
+
+SOM::Subframe generateSubframe(std::vector<SOM::Pixel> pixelArray, int dimX,
+                               int dimY, int frameDimX,
+                               int frameDimY, int startPosX, int startPosY);

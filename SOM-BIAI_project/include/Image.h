@@ -23,5 +23,6 @@ class Image {
     std::vector<Pixel> getPixelArray();
     void setPixelArray(std::vector<Pixel> pixelArray);
     void transformPixelArrayToImage();
+    void transformImageToPixelArray();
 };
 }  // namespace SOM

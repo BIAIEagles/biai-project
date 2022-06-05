@@ -23,3 +23,48 @@ std::vector<SOM::Subframe> generateRandomSubframes() {
     }
     return result;
 }
+
+std::vector<std::vector<SOM::Subframe>> convertPixelArrayToSubframes(
+    std::vector<SOM::Pixel> pixelArray, int dimX, int dimY, int frameDimX,
+    int frameDimY) {
+    std::vector<std::vector<SOM::Subframe>> subframes;
+    int positionX = 0, positionY = 0;
+    for (int i = 0; i < dimX; i+=frameDimX) {
+        positionY = 0;
+        for (int j = 0; j < dimY; j+=frameDimY) {
+            subframes[positionX][positionY] = generateSubframe(
+                pixelArray, dimX, dimY, frameDimX, frameDimY, i, j);
+            positionY++;
+        }
+        positionX++;
+    }
+    return subframes;
+}
+
+SOM::Subframe generateSubframe(std::vector<SOM::Pixel> pixelArray, int dimX,
+                               int dimY, int frameDimX, int frameDimY,
+                               int startPosX, int startPosY) {
+    std::vector<SOM::Pixel> pixelSubArray(frameDimX * frameDimY);
+    int subArrayIndex = 0;
+    for (int i = startPosX; i < startPosX + frameDimX; i++) {
+        for (int j = startPosY; j < startPosY + frameDimY;
+             j++, subArrayIndex++) {
+            pixelSubArray[subArrayIndex] = pixelArray[i * dimX + j];
+        }
+    }
+    std::vector<int> lumaParts(frameDimX * frameDimY);
+    std::vector<int> redChromaParts(frameDimX * frameDimY);
+    std::vector<int> blueChromaParts(frameDimX * frameDimY);
+    for (int i = 0; i < frameDimX * frameDimY; i++) {
+        lumaParts[i] = pixelSubArray[i].getBrightness();
+        redChromaParts[i] = pixelSubArray[i].getRedChroma();
+        blueChromaParts[i] = pixelSubArray[i].getBlueChroma();
+    }
+    double normLuma = (double) euclideanNorm<int>(lumaParts);
+    double normRedChroma = (double)euclideanNorm<int>(redChromaParts);
+    double normBlueChroma = (double)euclideanNorm<int>(blueChromaParts);
+    SOM::Subframe result(pixelSubArray, normLuma, normRedChroma,
+                         normBlueChroma);
+    return result;
+}
+

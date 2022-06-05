@@ -46,6 +46,20 @@ void SOM::Image::transformPixelArrayToImage() {
     free(bitmap);
 }
 
+void SOM::Image::transformImageToPixelArray() {
+    std::vector<Pixel> pixelArray(this->YCbCrImageHandle.size().height *
+                                  this->YCbCrImageHandle.size().width / 3);
+    int pixelIndex = 0;
+    for (int i = 0; i < this->YCbCrImageHandle.size().height *
+                            this->YCbCrImageHandle.size().width - 2;
+         i+=3) {
+        pixelArray[pixelIndex].setBrightness(this->YCbCrImageHandle.data[i]);
+        pixelArray[pixelIndex].setRedChroma(this->YCbCrImageHandle.data[i+1]);
+        pixelArray[pixelIndex].setBlueChroma(this->YCbCrImageHandle.data[i+2]);
+        pixelIndex++;
+    }
+}
+
 void Image::setBGRImageHandle(std::string filename) {
     this->BGRImageHandle = cv::imread(filename);
 }
