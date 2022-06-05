@@ -27,3 +27,5 @@ uint8_t SOM::Pixel::getBlueChroma() { return this->blue_chroma; }
 void SOM::Pixel::setRedChroma(uint8_t red_chroma) {
     this->red_chroma = red_chroma;
 }
+
+uint8_t SOM::Pixel::getRedChroma() { return this->red_chroma; }

@@ -11,6 +11,10 @@
 template <class T>
 std::vector<T> normalizeVector(std::vector<T> vector) {
     std::vector<T> resultVector;
+    double norm = euclideanNorm<T>(vector);
+    for (auto item : vector) {
+        resultVector.push_back(item / norm);
+    }
     return vector;
 }
 
@@ -28,7 +32,7 @@ std::vector<T> generateWeights(int count) {
     std::vector<T> weights;
     std::random_device device;
     std::mt19937_64 engine(device());
-    std::uniform_real_distribution<> dist(0, 2048);
+    std::uniform_int_distribution<> dist(0, 255);
 
     for (int i = 0; i < count; i++) {
         weights.push_back(dist(engine));
@@ -51,4 +55,4 @@ int findMinIndex(std::vector<T> input) {
 
 std::vector<int> denormalizeVector(std::vector<double> input, double factor);
 
-SOM::Subframe generateRandomSubframe(int x_dim, int y_dim);
+std::vector<SOM::Subframe> generateRandomSubframes();

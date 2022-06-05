@@ -15,9 +15,13 @@ class Image {
     Image();
     Image(std::string filename);
     Image(cv::Mat BGRImageHandle);
+    Image(std::vector<Pixel> pixelArray);
     void setBGRImageHandle(std::string filename);
     void transformBGR2YCbCr();
     void transformYCbCr2BGR();
     void saveToFile(std::string newFilename);
+    std::vector<Pixel> getPixelArray();
+    void setPixelArray(std::vector<Pixel> pixelArray);
+    void transformPixelArrayToImage();
 };
 }  // namespace SOM

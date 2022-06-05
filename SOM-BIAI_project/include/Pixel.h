@@ -22,5 +22,7 @@ class Pixel {
     uint8_t getBlueChroma();
 
     void setRedChroma(uint8_t red_chroma);
+
+    uint8_t getRedChroma();
 };
 }  // namespace SOM

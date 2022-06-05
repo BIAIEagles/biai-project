@@ -14,6 +14,9 @@
 #include "ImGuiFileDialog.h"
 
 #include <opencv2/opencv.hpp>
+
+#include "include/Image.h"
+
 using namespace std;
 
 bool LoadTextureFromFile(const char *filename, GLuint *out_texture, int *out_width, int *out_height);
@@ -76,6 +79,7 @@ int main(void)
                 int my_image_height = 0;
                 GLuint my_image_texture = 0;
                 bool ret = LoadTextureFromFile(filePathName.c_str(), &my_image_texture, &my_image_width, &my_image_height);
+                // SOM::Image image(filePathName);
                 if (ret)
                     ImGui::Image((void *)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
             }   
