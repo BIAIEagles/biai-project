@@ -63,3 +63,7 @@ void SOM::Image::transformImageToPixelArray() {
 void Image::setBGRImageHandle(std::string filename) {
     this->BGRImageHandle = cv::imread(filename);
 }
+
+cv::Mat SOM::Image::getBGRImageHandle() { return this->BGRImageHandle; }
+
+cv::Mat SOM::Image::getYCbCrImageHandle() { return this->YCbCrImageHandle; }

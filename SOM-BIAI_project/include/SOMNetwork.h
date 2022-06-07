@@ -23,5 +23,8 @@ class SOMNetwork {
     void evaluateNeuronWeights(int neuronIndex, std::vector<Pixel> pixelArray, colorPart colorChoice);
     void purgeDeadNeurons();
     std::vector<double> getNeuronWeights(int index);
+    std::vector<double> getLumaNeuronWeights(int index);
+    std::vector<double> getRedChromaNeuronWeights(int index);
+    std::vector<double> getBlueChromaNeuronWeights(int index);
 };
 }  // namespace SOM

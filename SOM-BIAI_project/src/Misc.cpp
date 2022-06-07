@@ -10,15 +10,21 @@ std::vector<int> denormalizeVector(std::vector<double> input, double factor) {
 
 std::vector<SOM::Subframe> generateRandomSubframes() {
     std::vector<SOM::Subframe> result;
-    for (int i = 0; i < 255; i++) {
-        for (int j = 0; j < 255; j++) {
-            for (int k = 0; k < 255; k++) {
-                SOM::Subframe temp;
-                temp.setBlueChromaValue(i);
-                temp.setRedChromaValue(j);
-                temp.setLumaValue(k);
-                result.push_back(temp);
-            }
+
+    std::random_device device;
+    std::mt19937_64 engine(device());
+    std::uniform_int_distribution<> dist(0, 255);
+    std::vector<SOM::Pixel> pixelArray;
+    for (int j = 0; j < 16*1024; j++) {
+        SOM::Pixel tempPixel;
+        tempPixel.setBrightness((uint8_t)dist(engine));
+        tempPixel.setRedChroma((uint8_t)dist(engine));
+        tempPixel.setBlueChroma((uint8_t)dist(engine));
+    }
+    std::vector<std::vector<SOM::Subframe>> frames2D = convertPixelArrayToSubframes(pixelArray, 4 * 1024, 4 * 1024, 4, 4);
+    for (int i = 0; i < frames2D.size(); i++) {
+        for (int j = 0; j < frames2D[i].size(); j++) {
+            result.push_back(frames2D[i][j]);
         }
     }
     return result;

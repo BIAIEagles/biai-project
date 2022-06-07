@@ -170,6 +170,7 @@
     <ClCompile Include="src\Neuron.cpp" />
     <ClCompile Include="src\Pixel.cpp" />
     <ClCompile Include="src\SOMNetwork.cpp" />
+    <ClCompile Include="src\SOMNetworkDecoder.cpp" />
     <ClCompile Include="src\SOMNetworkEncoder.cpp" />
     <ClCompile Include="src\Subframe.cpp" />
     <ClCompile Include="src\SubframeCompressed.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="include\Neuron.h" />
     <ClInclude Include="include\Pixel.h" />
     <ClInclude Include="include\SOMNetwork.h" />
+    <ClInclude Include="include\SOMNetworkDecoder.h" />
     <ClInclude Include="include\SOMNetworkEncoder.h" />
     <ClInclude Include="include\Subframe.h" />
     <ClInclude Include="include\SubframeCompressed.h" />

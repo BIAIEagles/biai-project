@@ -42,7 +42,13 @@ std::vector<T> generateWeights(int count) {
 
 template <class T>
 int findMinIndex(std::vector<T> input) {
-    int minVal = input.at(std::distance(input.begin(), std::min_element(input.begin(), input.end())));
+    T minVal = input[0];
+    for (auto it : input) {
+        if (it < minVal) {
+            minVal = it;
+        }
+    }
+    //int minVal = input.at(std::distance(input.begin(), std::min_element(input.begin(), input.end())));
     int index = 0;
     for (int i = 0; i < input.size(); i++) {
         if (minVal == input[i]) {

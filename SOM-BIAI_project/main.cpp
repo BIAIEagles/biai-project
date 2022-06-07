@@ -16,6 +16,10 @@
 #include <opencv2/opencv.hpp>
 
 #include "include/Image.h"
+#include "include/SOMNetwork.h"
+#include "include/SOMNetworkEncoder.h"
+#include "include/SOMNetworkDecoder.h"
+#include "include/Misc.h"
 
 using namespace std;
 
@@ -79,7 +83,42 @@ int main(void)
                 int my_image_height = 0;
                 GLuint my_image_texture = 0;
                 bool ret = LoadTextureFromFile(filePathName.c_str(), &my_image_texture, &my_image_width, &my_image_height);
-                // SOM::Image image(filePathName);
+                SOM::Image image(filePathName);
+                image.transformBGR2YCbCr();
+                image.transformImageToPixelArray();
+                SOM::SOMNetwork network = SOM::SOMNetwork(
+                    1024, image.getPixelArray().size(), 100, 12);
+                std::vector<SOM::Subframe> trainingSet =
+                    generateRandomSubframes();
+                for (int i = 0; i < 100; i++) {
+                    for (auto frame : trainingSet) {
+                        network.processFrame(frame);
+                    }
+                }
+                network.purgeDeadNeurons();
+                SOM::SOMNetworkEncoder encoder(network);
+                std::vector<std::vector<SOM::Subframe>> framesList =
+                    convertPixelArrayToSubframes(image.getPixelArray(),
+                                                 image.getYCbCrImageHandle().cols, image.getYCbCrImageHandle().rows, 4, 4);
+                std::vector<std::vector<SOM::SubframeCompressed>>
+                    encodedFrames = encoder.encode(framesList);
+                std::vector<SOM::SubframeCompressed> encodedFramesArrayFlattened;
+                for (int i = 0; i < encodedFrames.size(); i++) {
+                    for (int j = 0; j < encodedFrames[i].size(); j++) {
+                        encodedFramesArrayFlattened.push_back(
+                            encodedFrames[i][j]);
+                    }
+                }
+                SOM::SOMNetworkDecoder decoder(
+                    network, encodedFramesArrayFlattened, encodedFrames.size(),
+                    encodedFrames[0].size());
+                std::vector<SOM::Pixel> resultImagePixelArray =
+                    decoder.decode();
+                SOM::Image newImage;
+                newImage.setPixelArray(resultImagePixelArray);
+                newImage.transformPixelArrayToImage();
+                newImage.transformYCbCr2BGR();
+                newImage.saveToFile("testimage.jpg");
                 if (ret)
                     ImGui::Image((void *)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
             }   

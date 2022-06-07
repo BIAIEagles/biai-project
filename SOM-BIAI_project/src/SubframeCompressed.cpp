@@ -3,7 +3,7 @@ using namespace SOM;
 SubframeCompressed::SubframeCompressed() {}
 SubframeCompressed::SubframeCompressed(
     int lumaWinnerIndex, int redChromaWinnerIndex,
-                   int blueChromaWinnerIndex, uint8_t lumaValue, uint8_t redChromaValue, uint8_t blueChromaValue) {
+                   int blueChromaWinnerIndex, double lumaValue, double redChromaValue, double blueChromaValue) {
     this->lumaValue = lumaValue;
     this->redChromaValue = redChromaValue;
     this->blueChromaValue = blueChromaValue;
@@ -11,36 +11,36 @@ SubframeCompressed::SubframeCompressed(
     this->redChromaWinnerIndex = redChromaWinnerIndex;
     this->blueChromaWinnerIndex = blueChromaWinnerIndex;
 }
-void SubframeCompressed::setLumaValue(uint8_t lumaValue) {
+void SubframeCompressed::setLumaValue(double lumaValue) {
     this->lumaValue = lumaValue;
 }
-uint8_t SubframeCompressed::getLumaValue() { return this->lumaValue; }
-void SubframeCompressed::setRedChromaValue(uint8_t redChromaValue) {
+double SubframeCompressed::getLumaValue() { return this->lumaValue; }
+void SubframeCompressed::setRedChromaValue(double redChromaValue) {
     this->redChromaValue = redChromaValue;
 }
-uint8_t SubframeCompressed::getRedChromaValue() { return this->redChromaValue; }
-void SubframeCompressed::setBlueChromaValue(uint8_t blueChromaValue) {
+double SubframeCompressed::getRedChromaValue() { return this->redChromaValue; }
+void SubframeCompressed::setBlueChromaValue(double blueChromaValue) {
     this->blueChromaValue = blueChromaValue;
 }
-uint8_t SubframeCompressed::getBlueChromaValue() {
+double SubframeCompressed::getBlueChromaValue() {
     return this->blueChromaValue;
 }
-void SubframeCompressed::setLumaWinnerIndex(uint8_t lumaWinnerIndex) {
+void SubframeCompressed::setLumaWinnerIndex(double lumaWinnerIndex) {
     this->lumaWinnerIndex = lumaWinnerIndex;
 }
-uint8_t SubframeCompressed::getLumaWinnerIndex() {
+double SubframeCompressed::getLumaWinnerIndex() {
     return this->lumaWinnerIndex;
 }
-void SubframeCompressed::setRedChromaWinnerIndex(uint8_t redChromaWinnerIndex) {
+void SubframeCompressed::setRedChromaWinnerIndex(double redChromaWinnerIndex) {
     this->redChromaWinnerIndex = redChromaWinnerIndex;
 }
-uint8_t SubframeCompressed::getRedChromaWinnerIndex() {
+double SubframeCompressed::getRedChromaWinnerIndex() {
     return this->redChromaWinnerIndex;
 }
 void SubframeCompressed::setBlueChromaWinnerIndex(
-    uint8_t blueChromaWinnerIndex) {
+    double blueChromaWinnerIndex) {
     this->blueChromaWinnerIndex = blueChromaWinnerIndex;
 }
-uint8_t SubframeCompressed::getBlueChromaWinnerIndex() {
+double SubframeCompressed::getBlueChromaWinnerIndex() {
     return this->blueChromaWinnerIndex;
 }

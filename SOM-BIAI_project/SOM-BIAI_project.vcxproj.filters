@@ -75,6 +75,9 @@
     <ClCompile Include="src\SOMNetworkEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\SOMNetworkDecoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Image.h">
@@ -138,6 +141,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\SOMNetworkEncoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SOMNetworkDecoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

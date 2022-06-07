@@ -124,5 +124,17 @@ void SOMNetwork::purgeDeadNeurons() {
 }
 
 std::vector<double> SOMNetwork::getNeuronWeights(int index) {
-    return this->neuronList[index].getWeights();
+    return this->lumaNeuronList[index].getWeights();
+}
+
+std::vector<double> SOM::SOMNetwork::getLumaNeuronWeights(int index) {
+    return this->lumaNeuronList[index].getWeights();
+}
+
+std::vector<double> SOM::SOMNetwork::getRedChromaNeuronWeights(int index) {
+    return this->redChromaNeuronList[index].getWeights();
+}
+
+std::vector<double> SOM::SOMNetwork::getBlueChromaNeuronWeights(int index) {
+    return this->blueChromaNeuronList[index].getWeights();
 }
