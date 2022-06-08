@@ -86,8 +86,12 @@ int main(void)
                 SOM::Image image(filePathName);
                 image.transformBGR2YCbCr();
                 image.transformImageToPixelArray();
-                SOM::SOMNetwork network = SOM::SOMNetwork(
-                    1024, image.getPixelArray().size(), 100, 12);
+                SOM::SOMNetwork network =
+                    SOM::SOMNetwork(128,
+                                    //image.getBGRImageHandle().cols *
+                                    //    image.getBGRImageHandle().rows,
+                                    100,
+                                    100, 12);
                 std::vector<SOM::Subframe> trainingSet =
                     generateRandomSubframes();
                 for (int i = 0; i < 100; i++) {
