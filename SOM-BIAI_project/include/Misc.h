@@ -9,20 +9,20 @@
 #include "Subframe.h"
 
 template <class T>
-std::vector<T> normalizeVector(std::vector<T> mvector) {
+std::vector<T> normalizeVector(std::vector<T> vector) {
     std::vector<T> resultVector;
-    double norm = euclideanNorm<T>(mvector);
-    for (auto item : mvector) {
+    double norm = euclideanNorm<T>(vector);
+    for (auto item : vector) {
         resultVector.push_back(item / norm);
     }
-    return resultVector;
+    return vector;
 }
 
 template <class T>
 double euclideanNorm(std::vector<T> input) {
-    int sum = 0;
+    T sum = 0;
     for (auto item : input) {
-        sum += pow((int)item, 2);
+        sum += pow(item, 2);
     }
     return sqrt(sum * 1.0);
 }

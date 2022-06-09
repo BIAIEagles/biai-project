@@ -83,4 +83,3 @@ SOM::Subframe generateSubframe(std::vector<SOM::Pixel> pixelArray, int dimX,
                          normBlueChroma);
     return result;
 }
-

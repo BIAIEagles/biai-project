@@ -108,6 +108,7 @@ int main(void)
                 std::mt19937_64 engine(device());
                 std::uniform_int_distribution<> dist(0, 255);
                 std::vector<SOM::Pixel> tmppixelArraytrset;
+                std::vector<SOM::Subframe> trainingSet;
                 for (int i = 0; i < 255; i++) {
                     for (int j = 0; j < 255; j++) {
                         for (int k = 0; k < 255; k++) {
@@ -119,30 +120,43 @@ int main(void)
                         }
                     }
                 }
-                std::vector<std::vector<SOM::Subframe>> frames2D =
-                    convertPixelArrayToSubframes(tmppixelArraytrset, 4096, 4096,
+                 for (int i = 0; i < 128 * 128; i++) {
+                    SOM::Pixel tempPixel;
+                    tempPixel.setBrightness(dist(engine));
+                    tempPixel.setRedChroma(dist(engine));
+                    tempPixel.setBlueChroma(dist(engine));
+                    tmppixelArraytrset.push_back(tempPixel);
+                }
+                 std::vector<std::vector<SOM::Subframe>> frames2D =
+                    convertPixelArrayToSubframes(tmppixelArraytrset, 128, 128,
                                                  4,
                                                  4);
                 for (int i = 0; i < frames2D.size(); i++) {
                     for (int j = 0; j < frames2D[i].size(); j++) {
-                        resultTrSetTemp.push_back(frames2D[i][j]);
+                        trainingSet.push_back(frames2D[i][j]);
                     }
                 }
 
-
+                std::vector<std::vector<SOM::Subframe>> framesList =
+                    convertPixelArrayToSubframes(
+                        image.getPixelArray(), image.getYCbCrImageHandle().cols,
+                        image.getYCbCrImageHandle().rows, 4, 4);
+                for (int i = 0; i < framesList.size(); i++) {
+                    for (int j = 0; j < framesList[i].size(); j++) {
+                        trainingSet.push_back(framesList[i][j]);
+                    }
+                }
                // std::vector<SOM::Subframe> trainingSet =
                  //   generateRandomSubframes();
                 //    resultTrSetTemp;
                 for (int i = 0; i < 10; i++) {
-                    for (auto &frame : resultTrSetTemp) {
+                    for (auto &frame : trainingSet) {
                         network.processFrame(frame);
                     }
                 }
                 network.purgeDeadNeurons();
                 SOM::SOMNetworkEncoder encoder(network);
-                std::vector<std::vector<SOM::Subframe>> framesList =
-                    convertPixelArrayToSubframes(image.getPixelArray(),
-                                                 image.getYCbCrImageHandle().cols, image.getYCbCrImageHandle().rows, 4, 4);
+                
                 std::vector<std::vector<SOM::SubframeCompressed>>
                     encodedFrames = encoder.encode(framesList);
                 std::vector<SOM::SubframeCompressed> encodedFramesArrayFlattened;
@@ -160,7 +174,7 @@ int main(void)
                 SOM::Image newImage;
                 newImage.setPixelArray(resultImagePixelArray);
                 newImage.transformPixelArrayToImage();
-                newImage.transformYCbCr2BGR();
+                //newImage.transformYCbCr2BGR();
                 newImage.saveToFile("testimage.jpg");
                 if (ret)
                     ImGui::Image((void *)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
