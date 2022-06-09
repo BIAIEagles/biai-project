@@ -16,7 +16,7 @@ std::vector<Pixel> SOMNetworkDecoder::decode() {
     int posX = 0, posY = 0;
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-            SubframeCompressed temp = this->encodedFrames[i * width + j];
+            SubframeCompressed temp = this->encodedFrames[(i * width + j)];
             int lumaWinnerNeuronIndex = temp.getLumaWinnerIndex();
             int redChromaWinnerIndex = temp.getRedChromaWinnerIndex();
             int blueChromaWinnerIndex = temp.getBlueChromaWinnerIndex();

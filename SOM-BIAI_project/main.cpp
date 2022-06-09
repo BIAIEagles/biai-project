@@ -88,14 +88,39 @@ int main(void)
                 image.transformImageToPixelArray();
                 SOM::SOMNetwork network =
                     SOM::SOMNetwork(128,
-                                    //image.getBGRImageHandle().cols *
-                                    //    image.getBGRImageHandle().rows,
-                                    100,
+                                    4*4 ,
+                                    //100,
                                     100, 12);
-                std::vector<SOM::Subframe> trainingSet =
-                    generateRandomSubframes();
-                for (int i = 0; i < 100; i++) {
-                    for (auto frame : trainingSet) {
+
+
+                std::vector<SOM::Subframe> resultTrSetTemp;
+
+                std::random_device device;
+                std::mt19937_64 engine(device());
+                std::uniform_int_distribution<> dist(0, 255);
+                std::vector<SOM::Pixel> tmppixelArraytrset;
+                for (int j = 0; j < 8 * 1024; j++) {
+                    SOM::Pixel tempPixel;
+                    tempPixel.setBrightness((uint8_t)dist(engine));
+                    tempPixel.setRedChroma((uint8_t)dist(engine));
+                    tempPixel.setBlueChroma((uint8_t)dist(engine));
+                    tmppixelArraytrset.push_back(tempPixel);
+                }
+                std::vector<std::vector<SOM::Subframe>> frames2D =
+                    convertPixelArrayToSubframes(tmppixelArraytrset, 2 * 32,
+                                                 2 * 32, 4,
+                                                 4);
+                for (int i = 0; i < frames2D.size(); i++) {
+                    for (int j = 0; j < frames2D[i].size(); j++) {
+                        resultTrSetTemp.push_back(frames2D[i][j]);
+                    }
+                }
+
+
+                //std::vector<SOM::Subframe> trainingSet =
+                //    resultTrSetTemp;
+                for (int i = 0; i < 10; i++) {
+                    for (auto &frame : resultTrSetTemp) {
                         network.processFrame(frame);
                     }
                 }
