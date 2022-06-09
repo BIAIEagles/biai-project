@@ -24,7 +24,8 @@ class Image {
         transformPixelArrayToImage();
         transformYCbCr2BGR();
     }
-    void setBGRImageHandle(std::string filename);
+    void setBGRImageHandle(cv::Mat handle);
+    void setYCbCrImageHandle(cv::Mat handle);
     cv::Mat getBGRImageHandle();
     cv::Mat getYCbCrImageHandle();
     void transformBGR2YCbCr();

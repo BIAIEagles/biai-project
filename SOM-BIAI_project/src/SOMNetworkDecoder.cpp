@@ -33,8 +33,8 @@ std::vector<Pixel> SOMNetworkDecoder::decode() {
             std::vector<int> denormalizedBlueChromaPixels =
                 denormalizeVector(blueChromaPixels, temp.getBlueChromaValue());
             for (int k = 0; k < lumaPixels.size(); k++) {
-                Pixel tempPixel = Pixel(lumaPixels[k], redChromaPixels[k],
-                                        blueChromaPixels[k]);
+                Pixel tempPixel = Pixel(denormalizedLumaPixels[k], denormalizedRedChromaPixels[k],
+                                        denormalizedBlueChromaPixels[k]);
                 result.push_back(tempPixel);
             }
         }

@@ -39,6 +39,12 @@ void SOMNetwork::processFrame(Subframe frame) {
         this->findWinnerNeuron(frame.getPixelArray(), redChroma);
     int winnerNeuronIndexBlueChroma =
         this->findWinnerNeuron(frame.getPixelArray(), blueChroma);
+    this->evaluateNeuronWeights(winnerNeuronIndexLuma, frame.getPixelArray(),
+                                luma);
+    this->evaluateNeuronWeights(winnerNeuronIndexRedChroma, frame.getPixelArray(),
+                                redChroma);
+    this->evaluateNeuronWeights(winnerNeuronIndexBlueChroma, frame.getPixelArray(),
+                                blueChroma);
 }
 
 int SOMNetwork::findWinnerNeuron(std::vector<Pixel> pixelArray, colorPart colorChoice) {

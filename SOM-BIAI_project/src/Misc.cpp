@@ -15,14 +15,21 @@ std::vector<SOM::Subframe> generateRandomSubframes() {
     std::mt19937_64 engine(device());
     std::uniform_int_distribution<> dist(0, 255);
     std::vector<SOM::Pixel> pixelArray;
-    for (int j = 0; j < 16*1024; j++) {
-        SOM::Pixel tempPixel;
-        tempPixel.setBrightness((uint8_t)dist(engine));
-        tempPixel.setRedChroma((uint8_t)dist(engine));
-        tempPixel.setBlueChroma((uint8_t)dist(engine));
-        pixelArray.push_back(tempPixel);
+    //255*255*255
+
+    for (int i = 0; i < 255; i++) {
+        for (int j = 0; j < 255; j++) {
+            for (int k = 0; k < 255; k++) {
+                SOM::Pixel tempPixel;
+                tempPixel.setBrightness(i);
+                tempPixel.setRedChroma(j);
+                tempPixel.setBlueChroma(k);
+                pixelArray.push_back(tempPixel);
+            }
+        }
     }
-    std::vector<std::vector<SOM::Subframe>> frames2D = convertPixelArrayToSubframes(pixelArray, 4 * 32, 4 * 32, 4, 4);
+    std::vector<std::vector<SOM::Subframe>> frames2D =
+        convertPixelArrayToSubframes(pixelArray, 4096, 4096, 4, 4);
     for (int i = 0; i < frames2D.size(); i++) {
         for (int j = 0; j < frames2D[i].size(); j++) {
             result.push_back(frames2D[i][j]);

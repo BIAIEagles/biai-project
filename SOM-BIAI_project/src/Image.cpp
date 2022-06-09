@@ -7,7 +7,10 @@ Image::Image(cv::Mat BGRImageHandle) {
     this->transformBGR2YCbCr();
 }
 
-Image::Image(std::string filename) { this->setBGRImageHandle(filename); }
+Image::Image(std::string filename) {
+    this->BGRImageHandle = cv::imread(filename);
+    this->YCbCrImageHandle = BGRImageHandle;
+}
 
 void Image::transformBGR2YCbCr() {
     cv::cvtColor(this->BGRImageHandle, this->YCbCrImageHandle,
@@ -15,12 +18,14 @@ void Image::transformBGR2YCbCr() {
 }
 
 void Image::transformYCbCr2BGR() {
-    cv::cvtColor(this->YCbCrImageHandle, this->BGRImageHandle,
+    //this->BGRImageHandle = cv::Mat(this->YCbCrImageHandle, cv::COLOR_YCrCb2BGR);
+     cv::cvtColor(this->YCbCrImageHandle, this->BGRImageHandle,
                  cv::COLOR_YCrCb2BGR);
 }
 
 void Image::saveToFile(std::string newFilename) {
-    this->transformYCbCr2BGR();
+    //this->transformYCbCr2BGR();
+    this->BGRImageHandle = this->YCbCrImageHandle;
     cv::imwrite(newFilename, this->BGRImageHandle);
 }
 
@@ -30,8 +35,33 @@ void SOM::Image::setPixelArray(std::vector<Pixel> pixelArray) {
     this->pixelArray = pixelArray;
 }
 
-void SOM::Image::transformPixelArrayToImage() { 
-    static uint8_t *bitmap;
+void SOM::Image::transformPixelArrayToImage() {
+    YCbCrImageHandle.create(sqrt(pixelArray.size()), sqrt(pixelArray.size()),
+                               CV_8UC3);
+    int width = sqrt(pixelArray.size()) * 3;
+    int height = sqrt(pixelArray.size());
+    int pxIndex = 0;
+    char *dataP;
+    for (int i = 0; i < height; i++) {
+        dataP = YCbCrImageHandle.ptr<char>(i);
+        for (int j = 0; j < width-2; j+=3) {
+            int lumaValue = this->pixelArray[pxIndex]
+                    .getBrightness();
+            int redChromaValue = this->pixelArray[pxIndex]
+                                .getRedChroma();
+            int blueChromaValue = this->pixelArray[pxIndex]
+                                .getBlueChroma();
+            dataP[j] = lumaValue;
+            dataP[j+1] = redChromaValue;
+            dataP[j+2] = blueChromaValue;
+            pxIndex++;
+        }
+    }
+    cv::Mat temp = cv::Mat();
+    temp.create(400, 400, CV_8UC3);
+    //cv::cvtColor(this->YCbCrImageHandle, temp, cv::COLOR_YCrCb2BGR, 3);
+    cv::imwrite("test_ycbcr.jpg", this->YCbCrImageHandle);
+    /* static uint8_t *bitmap;
     bitmap = (uint8_t *)malloc(this->pixelArray.size() * sizeof(uint8_t) * 3);
     if (bitmap == nullptr) {
         return;
@@ -41,28 +71,43 @@ void SOM::Image::transformPixelArrayToImage() {
         bitmap[i + 1] = pixelArray[i].getBlueChroma();
         bitmap[i + 2] = pixelArray[i].getRedChroma();
     }
-    cv::Mat tempImageYCbCr(sqrt(this->pixelArray.size()), sqrt(this->pixelArray.size()), CV_8UC3, bitmap);
-    this->YCbCrImageHandle = tempImageYCbCr;
-    //free(bitmap);
+    cv::Mat tempImageYCbCr(sqrt(this->pixelArray.size()),
+                           sqrt(this->pixelArray.size()), CV_8SC3, bitmap);*/
+    //this->YCbCrImageHandle = tempImageYCbCr;
 }
 
 void SOM::Image::transformImageToPixelArray() {
-    std::vector<Pixel> pixelArray(this->YCbCrImageHandle.rows *
-                                  this->YCbCrImageHandle.cols);
-    int pixelIndex = 0;
-    for (int i = 0; i < (3*this->YCbCrImageHandle.rows *
-                            this->YCbCrImageHandle.cols) - 2;
-         i+=3) {
-        pixelArray[pixelIndex].setBrightness(this->YCbCrImageHandle.data[i]);
-        pixelArray[pixelIndex].setRedChroma(this->YCbCrImageHandle.data[i+1]);
-        pixelArray[pixelIndex].setBlueChroma(this->YCbCrImageHandle.data[i+2]);
-        pixelIndex++;
+    int width = YCbCrImageHandle.cols * YCbCrImageHandle.channels();
+    int height = YCbCrImageHandle.rows;
+    std::vector<Pixel> tpixelArray;
+    char *dataP;
+    int pxIndex = 0;
+    for (int i = 0; i < height; i++) {
+        dataP = YCbCrImageHandle.ptr<char>(i);
+        for (int j = 0; j < width - 2; j+=3) {
+            int lumaValue = dataP[j];
+            int redChromaValue = dataP[j + 1];
+            int blueChromaValue = dataP[j + 2];
+            Pixel temp;
+            temp.setBrightness(lumaValue);
+            temp.setRedChroma(redChromaValue);
+            temp.setBlueChroma(blueChromaValue);
+            tpixelArray.push_back(temp);
+        }
     }
-    this->pixelArray = pixelArray;
+    /* std::vector<Pixel> flattenedPixelArray;
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width / YCbCrImageHandle.channels(); j++) {
+            flattenedPixelArray.push_back(tpixelArray[i][j]);
+        }    
+    }*/
+    this->pixelArray = tpixelArray;
 }
 
-void Image::setBGRImageHandle(std::string filename) {
-    this->BGRImageHandle = cv::imread(filename);
+void Image::setBGRImageHandle(cv::Mat handle) { this->BGRImageHandle = handle; }
+
+void SOM::Image::setYCbCrImageHandle(cv::Mat handle) {
+    this->YCbCrImageHandle = handle;
 }
 
 cv::Mat SOM::Image::getBGRImageHandle() { return this->BGRImageHandle; }
