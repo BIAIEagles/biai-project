@@ -43,21 +43,22 @@ void SOM::Image::transformPixelArrayToImage() {
     }
     cv::Mat tempImageYCbCr(sqrt(this->pixelArray.size()), sqrt(this->pixelArray.size()), CV_8UC3, bitmap);
     this->YCbCrImageHandle = tempImageYCbCr;
-    free(bitmap);
+    //free(bitmap);
 }
 
 void SOM::Image::transformImageToPixelArray() {
-    std::vector<Pixel> pixelArray(this->YCbCrImageHandle.size().height *
-                                  this->YCbCrImageHandle.size().width / 3);
+    std::vector<Pixel> pixelArray(this->YCbCrImageHandle.rows *
+                                  this->YCbCrImageHandle.cols);
     int pixelIndex = 0;
-    for (int i = 0; i < this->YCbCrImageHandle.size().height *
-                            this->YCbCrImageHandle.size().width - 2;
+    for (int i = 0; i < (3*this->YCbCrImageHandle.rows *
+                            this->YCbCrImageHandle.cols) - 2;
          i+=3) {
         pixelArray[pixelIndex].setBrightness(this->YCbCrImageHandle.data[i]);
         pixelArray[pixelIndex].setRedChroma(this->YCbCrImageHandle.data[i+1]);
         pixelArray[pixelIndex].setBlueChroma(this->YCbCrImageHandle.data[i+2]);
         pixelIndex++;
     }
+    this->pixelArray = pixelArray;
 }
 
 void Image::setBGRImageHandle(std::string filename) {

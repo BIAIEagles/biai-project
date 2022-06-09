@@ -10,6 +10,8 @@ std::vector<std::vector<SubframeCompressed>> SOMNetworkEncoder::encode(
     std::vector<std::vector<Subframe>> frames) {
     std::vector<std::vector<SubframeCompressed>> encodedFrames;
     for (int i = 0; i < frames.size(); i++) {
+        std::vector<SubframeCompressed> tempVec(frames[i].size());
+        encodedFrames.push_back(tempVec);
         for (int j = 0; j < frames[i].size(); j++) {
             int winnerNeuronIndexLuma =
                 network.findWinnerNeuron(frames[i][j].getPixelArray(), luma);

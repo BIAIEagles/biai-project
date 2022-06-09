@@ -12,10 +12,18 @@ class Image {
     std::vector<Pixel> pixelArray;
 
    public:
-    Image() {}
+    Image() { this->BGRImageHandle = cv::Mat();
+        this->YCbCrImageHandle = cv::Mat();
+    }
     Image(std::string filename);
     Image(cv::Mat BGRImageHandle);
-    Image(std::vector<Pixel> pixelArray) { this->pixelArray = pixelArray; }
+    Image(std::vector<Pixel> pixelArray) {
+        this->pixelArray = pixelArray;
+        this->BGRImageHandle = cv::Mat();
+        this->YCbCrImageHandle = cv::Mat();
+        transformPixelArrayToImage();
+        transformYCbCr2BGR();
+    }
     void setBGRImageHandle(std::string filename);
     cv::Mat getBGRImageHandle();
     cv::Mat getYCbCrImageHandle();
