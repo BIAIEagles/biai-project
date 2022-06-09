@@ -96,10 +96,10 @@ int main(void)
                 nImTemp.saveToFile("test.jpg");
                 
                 SOM::SOMNetwork network =
-                    SOM::SOMNetwork(128,
+                    SOM::SOMNetwork(512,
                                     4*4 ,
                                     //100,
-                                    0.1, 10);
+                                    0.01, 12);
 
 
                 std::vector<SOM::Subframe> resultTrSetTemp;
@@ -127,15 +127,15 @@ int main(void)
                     tempPixel.setBlueChroma(dist(engine));
                     tmppixelArraytrset.push_back(tempPixel);
                 }
-                 std::vector<std::vector<SOM::Subframe>> frames2D =
-                    convertPixelArrayToSubframes(tmppixelArraytrset, 128, 128,
-                                                 4,
-                                                 4);
-                for (int i = 0; i < frames2D.size(); i++) {
-                    for (int j = 0; j < frames2D[i].size(); j++) {
-                        trainingSet.push_back(frames2D[i][j]);
-                    }
-                }
+                // std::vector<std::vector<SOM::Subframe>> frames2D =
+                //    convertPixelArrayToSubframes(tmppixelArraytrset, 128, 128,
+                //                                 4,
+                //                                 4);
+                //for (int i = 0; i < frames2D.size(); i++) {
+                //    for (int j = 0; j < frames2D[i].size(); j++) {
+                //        //trainingSet.push_back(frames2D[i][j]);
+                //    }
+                //}
 
                 std::vector<std::vector<SOM::Subframe>> framesList =
                     convertPixelArrayToSubframes(

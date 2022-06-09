@@ -54,7 +54,7 @@ std::vector<std::vector<SOM::Subframe>> convertPixelArrayToSubframes(
         }
         positionX++;
     }
-    return subframes;
+     return subframes;
 }
 
 SOM::Subframe generateSubframe(std::vector<SOM::Pixel> pixelArray, int dimX,

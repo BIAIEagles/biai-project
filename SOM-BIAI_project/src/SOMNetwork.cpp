@@ -100,24 +100,21 @@ void SOMNetwork::evaluateNeuronWeights(int neuronIndex,
             for (auto pixel : pixelArray) {
                 pixelArrayPart.push_back(pixel.getBrightness());
             }
-            Neuron neuron = this->lumaNeuronList[neuronIndex];
-            neuron.weightsEvaluation(pixelArrayPart, this->trainingStep);
+            this->lumaNeuronList[neuronIndex].weightsEvaluation(pixelArrayPart, this->trainingStep);
             break;        
         }
         case redChroma: {
             for (auto pixel : pixelArray) {
                 pixelArrayPart.push_back(pixel.getRedChroma());
             }
-            Neuron neuron = this->redChromaNeuronList[neuronIndex];
-            neuron.weightsEvaluation(pixelArrayPart, this->trainingStep);
+            this->redChromaNeuronList[neuronIndex].weightsEvaluation(pixelArrayPart, this->trainingStep);
             break;
         }
         case blueChroma: {
             for (auto pixel : pixelArray) {
                 pixelArrayPart.push_back(pixel.getBlueChroma());
             }
-            Neuron neuron = this->blueChromaNeuronList[neuronIndex];
-            neuron.weightsEvaluation(pixelArrayPart, this->trainingStep);
+            this->blueChromaNeuronList[neuronIndex].weightsEvaluation(pixelArrayPart, this->trainingStep);
             break;
         }
     }

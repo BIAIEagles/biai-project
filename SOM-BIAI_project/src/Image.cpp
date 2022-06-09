@@ -41,9 +41,9 @@ void SOM::Image::transformPixelArrayToImage() {
     int width = sqrt(pixelArray.size()) * 3;
     int height = sqrt(pixelArray.size());
     int pxIndex = 0;
-    char *dataP;
+    unsigned char *dataP;
     for (int i = 0; i < height; i++) {
-        dataP = YCbCrImageHandle.ptr<char>(i);
+        dataP = YCbCrImageHandle.ptr<unsigned char>(i);
         for (int j = 0; j < width-2; j+=3) {
             int lumaValue = this->pixelArray[pxIndex]
                     .getBrightness();
@@ -80,10 +80,10 @@ void SOM::Image::transformImageToPixelArray() {
     int width = YCbCrImageHandle.cols * YCbCrImageHandle.channels();
     int height = YCbCrImageHandle.rows;
     std::vector<Pixel> tpixelArray;
-    char *dataP;
+    unsigned char *dataP;
     int pxIndex = 0;
     for (int i = 0; i < height; i++) {
-        dataP = YCbCrImageHandle.ptr<char>(i);
+        dataP = YCbCrImageHandle.ptr<unsigned char>(i);
         for (int j = 0; j < width - 2; j+=3) {
             int lumaValue = dataP[j];
             int redChromaValue = dataP[j + 1];
