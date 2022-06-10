@@ -17,10 +17,10 @@ std::vector<Pixel> SOMNetworkDecoder::decode() {
     std::vector<Pixel> result(width*height);
     int posX = 0, posY = 0;
     int frameX = 0, frameY = 0;
-    for (int i = 0; i < height; i++) {
+    for (int i = 0; i < height; i+=frameHeight) {
         posY = 0;
         frameY = 0;
-        for (int j = 0; j < width; j++) {
+        for (int j = 0; j < width; j+=frameWidth) {
             SubframeCompressed temp = this->encodedFrames[frameX][frameY];
             int lumaWinnerNeuronIndex = temp.getLumaWinnerIndex();
             int redChromaWinnerIndex = temp.getRedChromaWinnerIndex();
@@ -37,20 +37,26 @@ std::vector<Pixel> SOMNetworkDecoder::decode() {
                 denormalizeVector(redChromaPixels, temp.getRedChromaValue());
             std::vector<int> denormalizedBlueChromaPixels =
                 denormalizeVector(blueChromaPixels, temp.getBlueChromaValue());
-            /* for (int k = 0; k < lumaPixels.size(); k++) {
-                Pixel tempPixel = Pixel(denormalizedLumaPixels[k], denormalizedRedChromaPixels[k],
-                                        denormalizedBlueChromaPixels[k]);
-
-                result.push_back(tempPixel);
+            std::vector<std::vector<int>> lumaPixelsDenormalized2D(frameHeight, std::vector<int>(frameWidth));
+            std::vector<std::vector<int>> redChromaPixelsDenormalized2D(frameHeight, std::vector<int>(frameWidth));
+            std::vector<std::vector<int>> blueChromaPixelsDenormalized2D(frameHeight, std::vector<int>(frameWidth));
+            /* for (int k = 0; k < frameHeight; k++) {
+                for (int l = 0; l < frameWidth; l++) {
+                    lumaPixelsDenormalized2D[k][l] =
+                        denormalizedLumaPixels[i * frameWidth + l];
+                    redChromaPixelsDenormalized2D[k][l] =
+                        denormalizedRedChromaPixels[i * frameWidth + l];
+                    blueChromaPixelsDenormalized2D[k][l] =
+                        denormalizedBlueChromaPixels[i * frameWidth + l];
+                }
             }*/
-            //int dataPixelIndex = 0;
-            for (int pxPosX = posX; pxPosX < posX + frameHeight; pxPosX++) {
-                int dataPixelIndex = 0;
-                for (int pxPosY = posY; pxPosY < posY + frameWidth; pxPosY++) {
-                    Pixel tempPixel = Pixel(denormalizedLumaPixels[dataPixelIndex],
-                                            denormalizedRedChromaPixels[dataPixelIndex],
-                                            denormalizedBlueChromaPixels[dataPixelIndex]);
-                    result[(pxPosX * (posY + frameWidth)) + pxPosY] = tempPixel;
+            int dataPixelIndex = 0;
+            for (int k = i; k < i + frameHeight; k++) {
+                for (int l = j; l < j + frameWidth; l++) {
+                    Pixel temp = Pixel(denormalizedLumaPixels[dataPixelIndex],
+                              denormalizedRedChromaPixels[dataPixelIndex],
+                              denormalizedBlueChromaPixels[dataPixelIndex]);
+                    result[k * (frameWidth + j) + l] = temp;
                     dataPixelIndex++;
                 }
             }

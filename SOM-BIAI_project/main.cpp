@@ -167,8 +167,8 @@ int main(void)
                     }
                 }
                 SOM::SOMNetworkDecoder decoder(
-                    network, encodedFrames, encodedFrames.size(),
-                    encodedFrames[0].size(), 8, 8);
+                    network, encodedFrames, image.getYCbCrImageHandle().cols,
+                    image.getYCbCrImageHandle().rows, 8, 8);
                 std::vector<SOM::Pixel> resultImagePixelArray =
                     decoder.decode();
                 SOM::Image newImage;
