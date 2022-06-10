@@ -17,7 +17,7 @@ class SOMNetwork {
    public:
     SOMNetwork();
     SOMNetwork(int neuronsCount, int weightsCount, double step,
-               int minWinnerCounter);
+               int minWinnerCounter, std::vector<Pixel> randomPixels);
     void processFrame(Subframe frame);
     int findWinnerNeuron(std::vector<Pixel> pixelArray, colorPart colorChoice);
     void evaluateNeuronWeights(int neuronIndex, std::vector<Pixel> pixelArray, colorPart colorChoice);

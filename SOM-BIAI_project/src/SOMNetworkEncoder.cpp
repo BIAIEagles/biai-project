@@ -27,5 +27,5 @@ std::vector<std::vector<SubframeCompressed>> SOMNetworkEncoder::encode(
             encodedFrames[i][j] = temp;
         }
     }
-    return encodedFrames;
+      return encodedFrames;
 }

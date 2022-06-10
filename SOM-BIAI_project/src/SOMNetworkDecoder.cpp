@@ -3,20 +3,23 @@
 using namespace SOM;
 
 SOM::SOMNetworkDecoder::SOMNetworkDecoder(
-    SOMNetwork network, std::vector<SubframeCompressed> encodedFrames,
-    int width, int height) {
+    SOMNetwork network, std::vector<std::vector<SubframeCompressed>> encodedFrames,
+    int width, int height, int frameWidth, int frameHeight) {
     this->width = width;
     this->height = height;
     this->encodedFrames = encodedFrames;
     this->network = network;
+    this->frameHeight = frameHeight;
+    this->frameWidth = frameWidth;
 }
 
 std::vector<Pixel> SOMNetworkDecoder::decode() {
-    std::vector<Pixel> result;
+    std::vector<Pixel> result(width*height * frameWidth * frameHeight);
     int posX = 0, posY = 0;
     for (int i = 0; i < height; i++) {
+        posY = 0;
         for (int j = 0; j < width; j++) {
-            SubframeCompressed temp = this->encodedFrames[(i * width + j)];
+            SubframeCompressed temp = this->encodedFrames[i][j];
             int lumaWinnerNeuronIndex = temp.getLumaWinnerIndex();
             int redChromaWinnerIndex = temp.getRedChromaWinnerIndex();
             int blueChromaWinnerIndex = temp.getBlueChromaWinnerIndex();
@@ -32,12 +35,26 @@ std::vector<Pixel> SOMNetworkDecoder::decode() {
                 denormalizeVector(redChromaPixels, temp.getRedChromaValue());
             std::vector<int> denormalizedBlueChromaPixels =
                 denormalizeVector(blueChromaPixels, temp.getBlueChromaValue());
-            for (int k = 0; k < lumaPixels.size(); k++) {
+            /* for (int k = 0; k < lumaPixels.size(); k++) {
                 Pixel tempPixel = Pixel(denormalizedLumaPixels[k], denormalizedRedChromaPixels[k],
                                         denormalizedBlueChromaPixels[k]);
+
                 result.push_back(tempPixel);
+            }*/
+            int dataPixelIndex = 0;
+            for (int pxPosX = posX; pxPosX < posX + frameHeight; pxPosX++) {
+                //int dataPixelIndex = 0;
+                for (int pxPosY = posY; pxPosY < posY + frameWidth; pxPosY++) {
+                    Pixel tempPixel = Pixel(denormalizedLumaPixels[dataPixelIndex],
+                                            denormalizedRedChromaPixels[dataPixelIndex],
+                                            denormalizedBlueChromaPixels[dataPixelIndex]);
+                    result[(pxPosX * (posY + frameWidth)) + pxPosY] = tempPixel;
+                    dataPixelIndex++;
+                }
             }
+            posY += frameWidth;
         }
+        posX += frameHeight;
     }
     return result;
 }

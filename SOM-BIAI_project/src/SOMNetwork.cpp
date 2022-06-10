@@ -8,25 +8,46 @@ SOMNetwork::SOMNetwork() {
 }
 
 SOMNetwork::SOMNetwork(int neuronsCount, int weightsCount, double step,
-                       int minWinnerCounter) {
+                       int minWinnerCounter, std::vector<Pixel> randomPixels) {
     this->trainingStep = step;
     this->minWinnerCounter = minWinnerCounter;
+
+    std::vector<double> lumaPixelSubArray;
+    std::vector<double> redChromaPixelSubArray;
+    std::vector<double> blueChromaPixelSubArray;
+
+    for (int i = 0; i < neuronsCount * weightsCount; i++) {
+        lumaPixelSubArray.push_back(randomPixels[i].getBrightness());
+        redChromaPixelSubArray.push_back(randomPixels[i].getRedChroma());
+        blueChromaPixelSubArray.push_back(randomPixels[i].getBlueChroma());
+    }
 
     for (int i = 0; i < neuronsCount; i++) {
         std::vector<double> weights =
             normalizeVector(generateWeights<int>(weightsCount));
+        std::vector<double> lumaSubPixelWeights;
+        std::vector<double> redChromaSubPixelWeights;
+        std::vector<double> blueChromaSubPixelWeights;
+        for (int j = 0; j < weightsCount; j++) {
+            lumaSubPixelWeights.push_back(
+                lumaPixelSubArray[i * weightsCount + j]);
+            redChromaSubPixelWeights.push_back(
+                redChromaPixelSubArray[i * weightsCount + j]);
+            blueChromaSubPixelWeights.push_back(
+                blueChromaPixelSubArray[i * weightsCount + j]);
+        }
         Neuron neuron(weights);
         this->neuronList.push_back(neuron);
-        std::vector<double> weightsLuma =
-            normalizeVector(generateWeights<int>(weightsCount));
+        std::vector<double> weightsLuma = normalizeVector(lumaSubPixelWeights);
+            //normalizeVector(generateWeights<int>(weightsCount));
         Neuron neuronLuma(weightsLuma);
         this->lumaNeuronList.push_back(neuronLuma);
-        std::vector<double> weightsRedChroma =
-            normalizeVector(generateWeights<int>(weightsCount));
+        std::vector<double> weightsRedChroma = normalizeVector(redChromaSubPixelWeights);
+            //normalizeVector(generateWeights<int>(weightsCount));
         Neuron neuronRedChroma(weightsRedChroma);
         this->redChromaNeuronList.push_back(neuronRedChroma);
-        std::vector<double> weightsBlueChroma =
-            normalizeVector(generateWeights<int>(weightsCount));
+        std::vector<double> weightsBlueChroma = normalizeVector(blueChromaSubPixelWeights);
+            //normalizeVector(generateWeights<int>(weightsCount));
         Neuron neuronBlueChroma(weightsBlueChroma);
         this->blueChromaNeuronList.push_back(neuronBlueChroma);
     }

@@ -96,10 +96,11 @@ int main(void)
                 nImTemp.saveToFile("test.jpg");
                 
                 SOM::SOMNetwork network =
-                    SOM::SOMNetwork(512,
-                                    4*4 ,
+                    SOM::SOMNetwork(image.getBGRImageHandle().cols *
+                                        image.getBGRImageHandle().rows/(8*8),
+                                    8*8 ,
                                     //100,
-                                    0.01, 12);
+                                    0.01, 1, image.getPixelArray());
 
 
                 std::vector<SOM::Subframe> resultTrSetTemp;
@@ -127,20 +128,20 @@ int main(void)
                     tempPixel.setBlueChroma(dist(engine));
                     tmppixelArraytrset.push_back(tempPixel);
                 }
-                 std::vector<std::vector<SOM::Subframe>> frames2D =
-                    convertPixelArrayToSubframes(tmppixelArraytrset, 512, 512,
-                                                 4,
-                                                 4);
-                for (int i = 0; i < frames2D.size(); i++) {
-                    for (int j = 0; j < frames2D[i].size(); j++) {
-                        trainingSet.push_back(frames2D[i][j]);
-                    }
-                }
+                // std::vector<std::vector<SOM::Subframe>> frames2D =
+                 //   convertPixelArrayToSubframes(tmppixelArraytrset, 512, 512,
+                //                                 4,
+               //                                  4);
+               // for (int i = 0; i < frames2D.size(); i++) {
+               //     for (int j = 0; j < frames2D[i].size(); j++) {
+                        //trainingSet.push_back(frames2D[i][j]);
+             //       }
+            //    }
 
                 std::vector<std::vector<SOM::Subframe>> framesList =
                     convertPixelArrayToSubframes(
                         image.getPixelArray(), image.getYCbCrImageHandle().cols,
-                        image.getYCbCrImageHandle().rows, 4, 4);
+                        image.getYCbCrImageHandle().rows, 8, 8);
                 for (int i = 0; i < framesList.size(); i++) {
                     for (int j = 0; j < framesList[i].size(); j++) {
                         trainingSet.push_back(framesList[i][j]);
@@ -149,7 +150,7 @@ int main(void)
                // std::vector<SOM::Subframe> trainingSet =
                  //   generateRandomSubframes();
                 //    resultTrSetTemp;
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 1; i++) {
                     for (auto &frame : trainingSet) {
                         network.processFrame(frame);
                     }
@@ -167,8 +168,8 @@ int main(void)
                     }
                 }
                 SOM::SOMNetworkDecoder decoder(
-                    network, encodedFramesArrayFlattened, encodedFrames.size(),
-                    encodedFrames[0].size());
+                    network, encodedFrames, encodedFrames.size(),
+                    encodedFrames[0].size(), 8, 8);
                 std::vector<SOM::Pixel> resultImagePixelArray =
                     decoder.decode();
                 SOM::Image newImage;

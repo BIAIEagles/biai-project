@@ -4,25 +4,25 @@
 namespace SOM {
 class Pixel {
    private:
-    int brightness;
-    int blue_chroma;
-    int red_chroma;
+    double brightness;
+    double blue_chroma;
+    double red_chroma;
 
    public:
-    Pixel(int brightness, int blue_chroma, int red_chroma);
+    Pixel(double brightness, double blue_chroma, double red_chroma);
 
     Pixel();
 
-    void setBrightness(int brightness);
+    void setBrightness(double brightness);
 
-    int getBrightness();
+    double getBrightness();
 
-    void setBlueChroma(int blue_chroma);
+    void setBlueChroma(double blue_chroma);
 
-    int getBlueChroma();
+    double getBlueChroma();
 
-    void setRedChroma(int red_chroma);
+    void setRedChroma(double red_chroma);
 
-    int getRedChroma();
+    double getRedChroma();
 };
 }  // namespace SOM

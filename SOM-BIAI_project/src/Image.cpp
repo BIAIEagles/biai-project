@@ -86,8 +86,8 @@ void SOM::Image::transformImageToPixelArray() {
         dataP = YCbCrImageHandle.ptr<unsigned char>(i);
         for (int j = 0; j < width - 2; j+=3) {
             int lumaValue = dataP[j];
-            int redChromaValue = dataP[j + 1];
-            int blueChromaValue = dataP[j + 2];
+            int redChromaValue = dataP[j + 2];
+            int blueChromaValue = dataP[j + 1];
             Pixel temp;
             temp.setBrightness(lumaValue);
             temp.setRedChroma(redChromaValue);

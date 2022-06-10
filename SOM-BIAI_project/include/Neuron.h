@@ -14,5 +14,6 @@ class Neuron {
     void weightsEvaluation(std::vector<double> input, double step);
     std::vector<double> getWeights();
     unsigned long getWinnerCount();
+    void setWeights(std::vector<double> weights);
 };
 }

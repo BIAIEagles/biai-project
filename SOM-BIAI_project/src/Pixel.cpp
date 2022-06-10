@@ -1,6 +1,6 @@
 #include "../include/Pixel.h"
 
-SOM::Pixel::Pixel(int brightness, int blue_chroma, int red_chroma) {
+SOM::Pixel::Pixel(double brightness, double blue_chroma, double red_chroma) {
     this->brightness = brightness;
     this->blue_chroma = blue_chroma;
     this->red_chroma = red_chroma;
@@ -12,20 +12,20 @@ SOM::Pixel::Pixel() {
     this->red_chroma = 0;
 }
 
-void SOM::Pixel::setBrightness(int brightness) {
+void SOM::Pixel::setBrightness(double brightness) {
     this->brightness = brightness;
 }
 
-int SOM::Pixel::getBrightness() { return this->brightness; }
+double SOM::Pixel::getBrightness() { return this->brightness; }
 
-void SOM::Pixel::setBlueChroma(int blue_chroma) {
+void SOM::Pixel::setBlueChroma(double blue_chroma) {
     this->blue_chroma = blue_chroma;
 }
 
-int SOM::Pixel::getBlueChroma() { return this->blue_chroma; }
+double SOM::Pixel::getBlueChroma() { return this->blue_chroma; }
 
-void SOM::Pixel::setRedChroma(int red_chroma) {
+void SOM::Pixel::setRedChroma(double red_chroma) {
     this->red_chroma = red_chroma;
 }
 
-int SOM::Pixel::getRedChroma() { return this->red_chroma; }
+double SOM::Pixel::getRedChroma() { return this->red_chroma; }

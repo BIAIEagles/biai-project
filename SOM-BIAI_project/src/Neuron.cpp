@@ -30,3 +30,5 @@ void Neuron::weightsEvaluation(std::vector<double> input, double step) {
 std::vector<double> Neuron::getWeights() { return this->weights; }
 
 unsigned long Neuron::getWinnerCount() { return this->winnerCount; }
+
+void Neuron::setWeights(std::vector<double> weights) { this->weights = weights; }

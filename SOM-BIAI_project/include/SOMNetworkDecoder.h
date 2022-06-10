@@ -11,13 +11,15 @@ class SOMNetworkDecoder {
     SOMNetwork network;
     int width;
     int height;
+    int frameWidth;
+    int frameHeight;
     std::vector<Pixel> pixelArray;
-    std::vector<SubframeCompressed> encodedFrames;
+    std::vector<std::vector<SubframeCompressed>> encodedFrames;
 
    public:
     SOMNetworkDecoder(SOMNetwork network,
-                      std::vector<SubframeCompressed> encodedFrames, int width,
-                      int height);
+                      std::vector<std::vector<SubframeCompressed>> encodedFrames, int width,
+                      int height, int frameWidth, int frameHeight);
     std::vector<Pixel> decode();
     void recodePixels(std::vector<int> subData, colorPart colorChoice,
                       int startPosX, int startPosY);
