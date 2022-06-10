@@ -120,22 +120,22 @@ int main(void)
                         }
                     }
                 }
-                 for (int i = 0; i < 128 * 128; i++) {
+                 for (int i = 0; i < 512 * 512; i++) {
                     SOM::Pixel tempPixel;
                     tempPixel.setBrightness(dist(engine));
                     tempPixel.setRedChroma(dist(engine));
                     tempPixel.setBlueChroma(dist(engine));
                     tmppixelArraytrset.push_back(tempPixel);
                 }
-                // std::vector<std::vector<SOM::Subframe>> frames2D =
-                //    convertPixelArrayToSubframes(tmppixelArraytrset, 128, 128,
-                //                                 4,
-                //                                 4);
-                //for (int i = 0; i < frames2D.size(); i++) {
-                //    for (int j = 0; j < frames2D[i].size(); j++) {
-                //        //trainingSet.push_back(frames2D[i][j]);
-                //    }
-                //}
+                 std::vector<std::vector<SOM::Subframe>> frames2D =
+                    convertPixelArrayToSubframes(tmppixelArraytrset, 512, 512,
+                                                 4,
+                                                 4);
+                for (int i = 0; i < frames2D.size(); i++) {
+                    for (int j = 0; j < frames2D[i].size(); j++) {
+                        trainingSet.push_back(frames2D[i][j]);
+                    }
+                }
 
                 std::vector<std::vector<SOM::Subframe>> framesList =
                     convertPixelArrayToSubframes(
@@ -149,7 +149,7 @@ int main(void)
                // std::vector<SOM::Subframe> trainingSet =
                  //   generateRandomSubframes();
                 //    resultTrSetTemp;
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 3; i++) {
                     for (auto &frame : trainingSet) {
                         network.processFrame(frame);
                     }

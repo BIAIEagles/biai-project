@@ -71,15 +71,72 @@ SOM::Subframe generateSubframe(std::vector<SOM::Pixel> pixelArray, int dimX,
     std::vector<int> lumaParts(frameDimX * frameDimY);
     std::vector<int> redChromaParts(frameDimX * frameDimY);
     std::vector<int> blueChromaParts(frameDimX * frameDimY);
+    std::vector<double> lumaPartsT(frameDimX * frameDimY);
+    std::vector<double> redChromaPartsT(frameDimX * frameDimY);
+    std::vector<double> blueChromaPartsT(frameDimX * frameDimY);
     for (int i = 0; i < frameDimX * frameDimY; i++) {
         lumaParts[i] = pixelSubArray[i].getBrightness();
         redChromaParts[i] = pixelSubArray[i].getRedChroma();
         blueChromaParts[i] = pixelSubArray[i].getBlueChroma();
+        lumaPartsT[i] = (double)pixelSubArray[i].getBrightness();
+        redChromaPartsT[i] = (double)pixelSubArray[i].getRedChroma();
+        blueChromaPartsT[i] = (double)pixelSubArray[i].getBlueChroma();
     }
-    double normLuma = (double) euclideanNorm<int>(lumaParts);
-    double normRedChroma = (double)euclideanNorm<int>(redChromaParts);
-    double normBlueChroma = (double)euclideanNorm<int>(blueChromaParts);
-    SOM::Subframe result = SOM::Subframe(pixelSubArray, normLuma, normRedChroma,
+    double normLuma = (double) euclideanNorm(lumaParts);
+    double normRedChroma = (double)euclideanNorm(redChromaParts);
+    double normBlueChroma = (double)euclideanNorm(blueChromaParts);
+    std::vector<double> normLumaParts = normalizeVector(lumaParts);
+    std::vector<double> normRedChromaParts = normalizeVector(redChromaParts);
+    std::vector<double> normBlueChromaParts = normalizeVector(blueChromaParts);
+    std::vector<SOM::Pixel> normPixelSubArray;
+    for (int i = 0; i < frameDimX * frameDimY; i++) {
+        SOM::Pixel tmp;
+        tmp.setBrightness(normLumaParts[i]);
+        tmp.setRedChroma(normRedChromaParts[i]);
+        tmp.setBlueChroma(normBlueChromaParts[i]);
+        normPixelSubArray.push_back(tmp);
+    }
+    SOM::Subframe result = SOM::Subframe(normPixelSubArray, normLuma, normRedChroma,
                          normBlueChroma);
     return result;
+}
+
+ std::vector<double> normalizeVector(std::vector<int> vector) {
+    std::vector<double> resultVector;
+    double norm = euclideanNorm(vector);
+    if (norm == 0) {
+        norm = 1;
+    }
+    for (auto item : vector) {
+        resultVector.push_back(item / norm);
+    }
+    return resultVector;
+}
+
+ double euclideanNorm(std::vector<int> input) {
+    int sum = 0;
+    for (auto item : input) {
+        sum += pow(item, 2);
+    }
+    return sqrt(sum * 1.0);
+}
+
+ std::vector<double> normalizeVector(std::vector<double> vector) {
+    std::vector<double> resultVector;
+    double norm = euclideanNorm(vector);
+    if (norm == 0) {
+        norm = 1;
+    }
+    for (auto item : vector) {
+        resultVector.push_back(item / norm);
+    }
+    return resultVector;
+}
+
+double euclideanNorm(std::vector<double> input) {
+    double sum = 0;
+    for (auto item : input) {
+        sum += pow(item, 2);
+    }
+    return sqrt(sum * 1.0);
 }

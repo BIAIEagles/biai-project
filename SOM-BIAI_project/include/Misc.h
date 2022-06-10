@@ -8,24 +8,13 @@
 #include <vector>
 #include "Subframe.h"
 
-template <class T>
-std::vector<T> normalizeVector(std::vector<T> vector) {
-    std::vector<T> resultVector;
-    double norm = euclideanNorm<T>(vector);
-    for (auto item : vector) {
-        resultVector.push_back(item / norm);
-    }
-    return vector;
-}
+std::vector<double> normalizeVector(std::vector<int> vector);
 
-template <class T>
-double euclideanNorm(std::vector<T> input) {
-    T sum = 0;
-    for (auto item : input) {
-        sum += pow(item, 2);
-    }
-    return sqrt(sum * 1.0);
-}
+std::vector<double> normalizeVector(std::vector<double> vector);
+
+double euclideanNorm(std::vector<int> input);
+
+double euclideanNorm(std::vector<double> input);
 
 template <class T>
 std::vector<T> generateWeights(int count) {

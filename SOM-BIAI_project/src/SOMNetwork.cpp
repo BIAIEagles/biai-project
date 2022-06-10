@@ -14,19 +14,19 @@ SOMNetwork::SOMNetwork(int neuronsCount, int weightsCount, double step,
 
     for (int i = 0; i < neuronsCount; i++) {
         std::vector<double> weights =
-            normalizeVector<double>(generateWeights<double>(weightsCount));
+            normalizeVector(generateWeights<int>(weightsCount));
         Neuron neuron(weights);
         this->neuronList.push_back(neuron);
         std::vector<double> weightsLuma =
-            normalizeVector<double>(generateWeights<double>(weightsCount));
+            normalizeVector(generateWeights<int>(weightsCount));
         Neuron neuronLuma(weightsLuma);
         this->lumaNeuronList.push_back(neuronLuma);
         std::vector<double> weightsRedChroma =
-            normalizeVector<double>(generateWeights<double>(weightsCount));
+            normalizeVector(generateWeights<int>(weightsCount));
         Neuron neuronRedChroma(weightsRedChroma);
         this->redChromaNeuronList.push_back(neuronRedChroma);
         std::vector<double> weightsBlueChroma =
-            normalizeVector<double>(generateWeights<double>(weightsCount));
+            normalizeVector(generateWeights<int>(weightsCount));
         Neuron neuronBlueChroma(weightsBlueChroma);
         this->blueChromaNeuronList.push_back(neuronBlueChroma);
     }

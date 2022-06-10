@@ -24,7 +24,7 @@ void Neuron::weightsEvaluation(std::vector<double> input, double step) {
         weights[i] += step * (input[i] - weights[i]);
     }
 
-    this->weights = normalizeVector<double>(weights);
+    this->weights = normalizeVector(weights);
 }
 
 std::vector<double> Neuron::getWeights() { return this->weights; }
