@@ -7,6 +7,7 @@
 #include <random>
 #include <vector>
 #include "Subframe.h"
+#include "Neuron.h"
 
 std::vector<double> normalizeVector(std::vector<int> vector);
 

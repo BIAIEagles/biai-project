@@ -142,21 +142,30 @@ void SOMNetwork::evaluateNeuronWeights(int neuronIndex,
 }
 
 void SOMNetwork::purgeDeadNeurons() {
+    std::vector<Neuron> tempLumaNeuronList;
+    std::vector<Neuron> tempRedChromaNeuronList;
+    std::vector<Neuron> tempBlueChromaNeuronList;
     for (int i = 0; i < this->lumaNeuronList.size(); i++) {
-        if (this->lumaNeuronList[i].getWinnerCount() < this->minWinnerCounter) {
-            this->lumaNeuronList.erase(this->lumaNeuronList.begin() + i);
+        if (this->lumaNeuronList[i].getWinnerCount() >= this->minWinnerCounter) {
+            //this->lumaNeuronList.erase(this->lumaNeuronList.begin() + i);
+            tempLumaNeuronList.push_back(this->lumaNeuronList[i]);
         }
     }
+    this->lumaNeuronList = tempLumaNeuronList;
     for (int i = 0; i < this->blueChromaNeuronList.size(); i++) {
-        if (this->blueChromaNeuronList[i].getWinnerCount() < this->minWinnerCounter) {
-            this->blueChromaNeuronList.erase(this->blueChromaNeuronList.begin() + i);
+        if (this->blueChromaNeuronList[i].getWinnerCount() >= this->minWinnerCounter) {
+            //this->blueChromaNeuronList.erase(this->blueChromaNeuronList.begin() + i);
+            tempBlueChromaNeuronList.push_back(this->blueChromaNeuronList[i]);
         }
     }
+    this->blueChromaNeuronList = tempBlueChromaNeuronList;
     for (int i = 0; i < this->redChromaNeuronList.size(); i++) {
-        if (this->redChromaNeuronList[i].getWinnerCount() < this->minWinnerCounter) {
-            this->redChromaNeuronList.erase(this->redChromaNeuronList.begin() + i);
+        if (this->redChromaNeuronList[i].getWinnerCount() >= this->minWinnerCounter) {
+            //this->redChromaNeuronList.erase(this->redChromaNeuronList.begin() + i);
+            tempRedChromaNeuronList.push_back(this->redChromaNeuronList[i]);
         }
     }
+    this->redChromaNeuronList = tempRedChromaNeuronList;
 }
 
 std::vector<double> SOMNetwork::getNeuronWeights(int index) {

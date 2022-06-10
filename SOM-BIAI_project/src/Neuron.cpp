@@ -32,3 +32,7 @@ std::vector<double> Neuron::getWeights() { return this->weights; }
 unsigned long Neuron::getWinnerCount() { return this->winnerCount; }
 
 void Neuron::setWeights(std::vector<double> weights) { this->weights = weights; }
+
+bool neuronBelowThreshold(SOM::Neuron neuron) {
+    return neuron.getWinnerCount() < 10 ? true : false;
+}

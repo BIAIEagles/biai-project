@@ -71,16 +71,10 @@ SOM::Subframe generateSubframe(std::vector<SOM::Pixel> pixelArray, int dimX,
     std::vector<int> lumaParts(frameDimX * frameDimY);
     std::vector<int> redChromaParts(frameDimX * frameDimY);
     std::vector<int> blueChromaParts(frameDimX * frameDimY);
-    std::vector<double> lumaPartsT(frameDimX * frameDimY);
-    std::vector<double> redChromaPartsT(frameDimX * frameDimY);
-    std::vector<double> blueChromaPartsT(frameDimX * frameDimY);
     for (int i = 0; i < frameDimX * frameDimY; i++) {
         lumaParts[i] = pixelSubArray[i].getBrightness();
         redChromaParts[i] = pixelSubArray[i].getRedChroma();
         blueChromaParts[i] = pixelSubArray[i].getBlueChroma();
-        lumaPartsT[i] = (double)pixelSubArray[i].getBrightness();
-        redChromaPartsT[i] = (double)pixelSubArray[i].getRedChroma();
-        blueChromaPartsT[i] = (double)pixelSubArray[i].getBlueChroma();
     }
     double normLuma = (double) euclideanNorm(lumaParts);
     double normRedChroma = (double)euclideanNorm(redChromaParts);
@@ -100,7 +94,6 @@ SOM::Subframe generateSubframe(std::vector<SOM::Pixel> pixelArray, int dimX,
                          normBlueChroma);
     return result;
 }
-
  std::vector<double> normalizeVector(std::vector<int> vector) {
     std::vector<double> resultVector;
     double norm = euclideanNorm(vector);

@@ -17,3 +17,5 @@ class Neuron {
     void setWeights(std::vector<double> weights);
 };
 }
+
+bool neuronBelowThreshold(SOM::Neuron neuron);

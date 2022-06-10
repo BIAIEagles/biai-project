@@ -100,16 +100,15 @@ int main(void)
                                         image.getBGRImageHandle().rows/(8*8),
                                     8*8 ,
                                     //100,
-                                    0.01, 1, image.getPixelArray());
+                                    0.01, 10, image.getPixelArray());
 
-
+                std::vector<SOM::Subframe> trainingSet;
                 std::vector<SOM::Subframe> resultTrSetTemp;
 
-                std::random_device device;
+                /* std::random_device device;
                 std::mt19937_64 engine(device());
                 std::uniform_int_distribution<> dist(0, 255);
                 std::vector<SOM::Pixel> tmppixelArraytrset;
-                std::vector<SOM::Subframe> trainingSet;
                 for (int i = 0; i < 255; i++) {
                     for (int j = 0; j < 255; j++) {
                         for (int k = 0; k < 255; k++) {
@@ -120,23 +119,23 @@ int main(void)
                             tmppixelArraytrset.push_back(tempPixel);
                         }
                     }
-                }
-                 for (int i = 0; i < 512 * 512; i++) {
+                }*/
+                /* for (int i = 0; i < 512 * 512; i++) {
                     SOM::Pixel tempPixel;
                     tempPixel.setBrightness(dist(engine));
                     tempPixel.setRedChroma(dist(engine));
                     tempPixel.setBlueChroma(dist(engine));
                     tmppixelArraytrset.push_back(tempPixel);
                 }
-                // std::vector<std::vector<SOM::Subframe>> frames2D =
-                 //   convertPixelArrayToSubframes(tmppixelArraytrset, 512, 512,
-                //                                 4,
-               //                                  4);
-               // for (int i = 0; i < frames2D.size(); i++) {
-               //     for (int j = 0; j < frames2D[i].size(); j++) {
-                        //trainingSet.push_back(frames2D[i][j]);
-             //       }
-            //    }
+                 std::vector<std::vector<SOM::Subframe>> frames2D =
+                    convertPixelArrayToSubframes(tmppixelArraytrset, 512, 512,
+                                                 8,
+                                                 8);
+                for (int i = 0; i < frames2D.size(); i++) {
+                    for (int j = 0; j < frames2D[i].size(); j++) {
+                        trainingSet.push_back(frames2D[i][j]);
+                    }
+                }*/
 
                 std::vector<std::vector<SOM::Subframe>> framesList =
                     convertPixelArrayToSubframes(
@@ -150,7 +149,7 @@ int main(void)
                // std::vector<SOM::Subframe> trainingSet =
                  //   generateRandomSubframes();
                 //    resultTrSetTemp;
-                for (int i = 0; i < 1; i++) {
+                for (int i = 0; i < 3; i++) {
                     for (auto &frame : trainingSet) {
                         network.processFrame(frame);
                     }

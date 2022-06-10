@@ -14,12 +14,14 @@ SOM::SOMNetworkDecoder::SOMNetworkDecoder(
 }
 
 std::vector<Pixel> SOMNetworkDecoder::decode() {
-    std::vector<Pixel> result(width*height * frameWidth * frameHeight);
+    std::vector<Pixel> result(width*height);
     int posX = 0, posY = 0;
+    int frameX = 0, frameY = 0;
     for (int i = 0; i < height; i++) {
         posY = 0;
+        frameY = 0;
         for (int j = 0; j < width; j++) {
-            SubframeCompressed temp = this->encodedFrames[i][j];
+            SubframeCompressed temp = this->encodedFrames[frameX][frameY];
             int lumaWinnerNeuronIndex = temp.getLumaWinnerIndex();
             int redChromaWinnerIndex = temp.getRedChromaWinnerIndex();
             int blueChromaWinnerIndex = temp.getBlueChromaWinnerIndex();
@@ -41,9 +43,9 @@ std::vector<Pixel> SOMNetworkDecoder::decode() {
 
                 result.push_back(tempPixel);
             }*/
-            int dataPixelIndex = 0;
+            //int dataPixelIndex = 0;
             for (int pxPosX = posX; pxPosX < posX + frameHeight; pxPosX++) {
-                //int dataPixelIndex = 0;
+                int dataPixelIndex = 0;
                 for (int pxPosY = posY; pxPosY < posY + frameWidth; pxPosY++) {
                     Pixel tempPixel = Pixel(denormalizedLumaPixels[dataPixelIndex],
                                             denormalizedRedChromaPixels[dataPixelIndex],
@@ -53,7 +55,9 @@ std::vector<Pixel> SOMNetworkDecoder::decode() {
                 }
             }
             posY += frameWidth;
+            frameY++;
         }
+        frameX++;
         posX += frameHeight;
     }
     return result;
