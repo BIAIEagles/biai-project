@@ -78,6 +78,9 @@
     <ClCompile Include="src\SOMNetworkDecoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Spinner.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Image.h">
@@ -144,6 +147,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\SOMNetworkDecoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Spinner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

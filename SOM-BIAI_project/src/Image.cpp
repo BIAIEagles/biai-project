@@ -12,6 +12,12 @@ Image::Image(std::string filename) {
     this->YCbCrImageHandle = BGRImageHandle;
 }
 
+void Image::readImageFromFileName(std::string fileName)
+{
+    this->BGRImageHandle = cv::imread(fileName);
+    this->YCbCrImageHandle = BGRImageHandle;
+}
+
 void Image::transformBGR2YCbCr() {
     cv::cvtColor(this->BGRImageHandle, this->YCbCrImageHandle,
                  cv::COLOR_BGR2YCrCb);

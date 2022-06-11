@@ -20,6 +20,7 @@
 #include "include/SOMNetworkEncoder.h"
 #include "include/SOMNetworkDecoder.h"
 #include "include/Misc.h"
+#include "Spinner.h"
 
 using namespace std;
 
@@ -52,6 +53,12 @@ int main(void)
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 
+    char selectedFile[] = "Selected file: ";
+    std::string filePathName;
+    const char *str = " ";
+    SOM::Image image;
+
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         /* Render here */
@@ -74,74 +81,81 @@ int main(void)
         if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
             // action if OK
             if (ImGuiFileDialog::Instance()->IsOk()) {
-                std::string filePathName =
+                filePathName =
                     ImGuiFileDialog::Instance()->GetFilePathName();
                 std::string filePath =
                     ImGuiFileDialog::Instance()->GetCurrentPath();
                 // action
+                image.readImageFromFileName(filePathName);
                 int my_image_width = 0;
                 int my_image_height = 0;
                 GLuint my_image_texture = 0;
-                bool ret = LoadTextureFromFile(filePathName.c_str(), &my_image_texture, &my_image_width, &my_image_height);
-                SOM::Image image(filePathName);
-                image.transformImageToPixelArray();
-                
-                SOM::SOMNetwork network =
-                    SOM::SOMNetwork(image.getBGRImageHandle().cols *
-                                        image.getBGRImageHandle().rows/(8*8),
-                                    8*8 ,
-                                    //100,
-                                    0.01, 10, image.getPixelArray());
-
-                std::vector<SOM::Subframe> trainingSet;
-                std::vector<SOM::Subframe> resultTrSetTemp;
-
-                std::vector<std::vector<SOM::Subframe>> framesList =
-                    convertPixelArrayToSubframes(
-                        image.getPixelArray(), image.getYCbCrImageHandle().cols,
-                        image.getYCbCrImageHandle().rows, 8, 8);
-                for (int i = 0; i < framesList.size(); i++) {
-                    for (int j = 0; j < framesList[i].size(); j++) {
-                        trainingSet.push_back(framesList[i][j]);
-                    }
-                }
-                for (int i = 0; i < 6; i++) {
-                    for (auto &frame : trainingSet) {
-                        network.processFrame(frame);
-                    }
-                }
-                network.purgeDeadNeurons();
-                SOM::SOMNetworkEncoder encoder(network);
-                
-                std::vector<std::vector<SOM::SubframeCompressed>>
-                    encodedFrames = encoder.encode(framesList);
-                std::vector<SOM::SubframeCompressed> encodedFramesArrayFlattened;
-                for (int i = 0; i < encodedFrames.size(); i++) {
-                    for (int j = 0; j < encodedFrames[i].size(); j++) {
-                        encodedFramesArrayFlattened.push_back(
-                            encodedFrames[i][j]);
-                    }
-                }
-                SOM::SOMNetworkDecoder decoder(
-                    network, encodedFrames, image.getYCbCrImageHandle().cols,
-                    image.getYCbCrImageHandle().rows, 8, 8);
-                std::vector<SOM::Pixel> resultImagePixelArray =
-                    decoder.decode();
-                SOM::Image newImage;
-                newImage.setPixelArray(resultImagePixelArray);
-                newImage.transformPixelArrayToImage();
-                //newImage.transformYCbCr2BGR();
-                newImage.saveToFile("testimage.jpg");
-                if (ret)
-                    ImGui::Image((void *)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
+                //bool ret = LoadTextureFromFile(filePathName.c_str(), &my_image_texture, &my_image_width, &my_image_height);
+                memset(&str, 0, sizeof str);
+                str = strcat(selectedFile, filePathName.c_str());
             }   
             // close
             ImGuiFileDialog::Instance()->Close();
         }
 
-        ImGui::SliderFloat("Compression rate", &compRate, 1.f, 50.f);
-        ImGui::SliderFloat("PSNR", &psnr, 1.f, 50.f);
-        ImGui::Button("Run SOM & compress the image");
+        ImGui::Text(str);
+
+        if (ImGui::Button("Run SOM & compress the image")) 
+        {
+            ImGui::ProgressBar(0, ImVec2(0.0f, 0.0f));
+            image.transformImageToPixelArray();
+
+            SOM::SOMNetwork network =
+                SOM::SOMNetwork(image.getBGRImageHandle().cols *
+                                    image.getBGRImageHandle().rows / (8 * 8),
+                                8 * 8,
+                                // 100,
+                                0.01, 10, image.getPixelArray());
+
+            std::vector<SOM::Subframe> trainingSet;
+            std::vector<SOM::Subframe> resultTrSetTemp;
+
+            std::vector<std::vector<SOM::Subframe>> framesList =
+                convertPixelArrayToSubframes(
+                    image.getPixelArray(), image.getYCbCrImageHandle().cols,
+                    image.getYCbCrImageHandle().rows, 8, 8);
+            for (int i = 0; i < framesList.size(); i++) {
+                for (int j = 0; j < framesList[i].size(); j++) {
+                    trainingSet.push_back(framesList[i][j]);
+                }
+            }
+            for (int i = 0; i < 6; i++) {
+                for (auto &frame : trainingSet) {
+                    network.processFrame(frame);
+                }
+            }
+            network.purgeDeadNeurons();
+            SOM::SOMNetworkEncoder encoder(network);
+
+            std::vector<std::vector<SOM::SubframeCompressed>> encodedFrames =
+                encoder.encode(framesList);
+            std::vector<SOM::SubframeCompressed> encodedFramesArrayFlattened;
+            for (int i = 0; i < encodedFrames.size(); i++) {
+                for (int j = 0; j < encodedFrames[i].size(); j++) {
+                    encodedFramesArrayFlattened.push_back(encodedFrames[i][j]);
+                }
+            }
+            SOM::SOMNetworkDecoder decoder(
+                network, encodedFrames, image.getYCbCrImageHandle().cols,
+                image.getYCbCrImageHandle().rows, 8, 8);
+            std::vector<SOM::Pixel> resultImagePixelArray = decoder.decode();
+            SOM::Image newImage;
+            newImage.setPixelArray(resultImagePixelArray);
+            newImage.transformPixelArrayToImage();
+            // newImage.transformYCbCr2BGR();
+            newImage.saveToFile("testimage.jpg");image.transformImageToPixelArray();
+            ImGui::ProgressBar(1, ImVec2(0.f, 0.f));
+            ImGui::Text("File was successfuly compressed and saved as testimage.jpg");
+        }
+
+        //ImGui::SliderFloat("Compression rate", &compRate, 1.f, 50.f);
+        //ImGui::SliderFloat("PSNR", &psnr, 1.f, 50.f);
+        
         ImGui::End();
         ImGui::EndFrame();
         // Render dear imgui into screen
