@@ -84,16 +84,7 @@ int main(void)
                 GLuint my_image_texture = 0;
                 bool ret = LoadTextureFromFile(filePathName.c_str(), &my_image_texture, &my_image_width, &my_image_height);
                 SOM::Image image(filePathName);
-                //image.transformBGR2YCbCr();
                 image.transformImageToPixelArray();
-                SOM::Image nImTemp = SOM::Image();
-                //nImTemp.setYCbCrImageHandle(image.getYCbCrImageHandle());
-                nImTemp.setPixelArray(image.getPixelArray());
-                // nImTemp.setBGRImageHandle(image.getBGRImageHandle());
-                // nImTemp.transformBGR2YCbCr();
-                nImTemp.transformPixelArrayToImage();
-                //nImTemp.transformYCbCr2BGR();
-                nImTemp.saveToFile("test.jpg");
                 
                 SOM::SOMNetwork network =
                     SOM::SOMNetwork(image.getBGRImageHandle().cols *
@@ -105,38 +96,6 @@ int main(void)
                 std::vector<SOM::Subframe> trainingSet;
                 std::vector<SOM::Subframe> resultTrSetTemp;
 
-                /* std::random_device device;
-                std::mt19937_64 engine(device());
-                std::uniform_int_distribution<> dist(0, 255);
-                std::vector<SOM::Pixel> tmppixelArraytrset;
-                for (int i = 0; i < 255; i++) {
-                    for (int j = 0; j < 255; j++) {
-                        for (int k = 0; k < 255; k++) {
-                            SOM::Pixel tempPixel;
-                            tempPixel.setBrightness(i);
-                            tempPixel.setRedChroma(j);
-                            tempPixel.setBlueChroma(k);
-                            tmppixelArraytrset.push_back(tempPixel);
-                        }
-                    }
-                }*/
-                /* for (int i = 0; i < 512 * 512; i++) {
-                    SOM::Pixel tempPixel;
-                    tempPixel.setBrightness(dist(engine));
-                    tempPixel.setRedChroma(dist(engine));
-                    tempPixel.setBlueChroma(dist(engine));
-                    tmppixelArraytrset.push_back(tempPixel);
-                }
-                 std::vector<std::vector<SOM::Subframe>> frames2D =
-                    convertPixelArrayToSubframes(tmppixelArraytrset, 512, 512,
-                                                 8,
-                                                 8);
-                for (int i = 0; i < frames2D.size(); i++) {
-                    for (int j = 0; j < frames2D[i].size(); j++) {
-                        trainingSet.push_back(frames2D[i][j]);
-                    }
-                }*/
-
                 std::vector<std::vector<SOM::Subframe>> framesList =
                     convertPixelArrayToSubframes(
                         image.getPixelArray(), image.getYCbCrImageHandle().cols,
@@ -146,10 +105,7 @@ int main(void)
                         trainingSet.push_back(framesList[i][j]);
                     }
                 }
-               // std::vector<SOM::Subframe> trainingSet =
-                 //   generateRandomSubframes();
-                //    resultTrSetTemp;
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 6; i++) {
                     for (auto &frame : trainingSet) {
                         network.processFrame(frame);
                     }

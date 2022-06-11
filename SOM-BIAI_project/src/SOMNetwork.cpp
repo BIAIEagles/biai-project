@@ -38,16 +38,16 @@ SOMNetwork::SOMNetwork(int neuronsCount, int weightsCount, double step,
         }
         Neuron neuron(weights);
         this->neuronList.push_back(neuron);
-        std::vector<double> weightsLuma = normalizeVector(lumaSubPixelWeights);
-            //normalizeVector(generateWeights<int>(weightsCount));
+        std::vector<double> weightsLuma = //normalizeVector(lumaSubPixelWeights);
+            normalizeVector(generateWeights<int>(weightsCount));
         Neuron neuronLuma(weightsLuma);
         this->lumaNeuronList.push_back(neuronLuma);
-        std::vector<double> weightsRedChroma = normalizeVector(redChromaSubPixelWeights);
-            //normalizeVector(generateWeights<int>(weightsCount));
+        std::vector<double> weightsRedChroma = //normalizeVector(redChromaSubPixelWeights);
+            normalizeVector(generateWeights<int>(weightsCount));
         Neuron neuronRedChroma(weightsRedChroma);
         this->redChromaNeuronList.push_back(neuronRedChroma);
-        std::vector<double> weightsBlueChroma = normalizeVector(blueChromaSubPixelWeights);
-            //normalizeVector(generateWeights<int>(weightsCount));
+        std::vector<double> weightsBlueChroma = //normalizeVector(blueChromaSubPixelWeights);
+            normalizeVector(generateWeights<int>(weightsCount));
         Neuron neuronBlueChroma(weightsBlueChroma);
         this->blueChromaNeuronList.push_back(neuronBlueChroma);
     }
@@ -147,21 +147,18 @@ void SOMNetwork::purgeDeadNeurons() {
     std::vector<Neuron> tempBlueChromaNeuronList;
     for (int i = 0; i < this->lumaNeuronList.size(); i++) {
         if (this->lumaNeuronList[i].getWinnerCount() >= this->minWinnerCounter) {
-            //this->lumaNeuronList.erase(this->lumaNeuronList.begin() + i);
             tempLumaNeuronList.push_back(this->lumaNeuronList[i]);
         }
     }
     this->lumaNeuronList = tempLumaNeuronList;
     for (int i = 0; i < this->blueChromaNeuronList.size(); i++) {
         if (this->blueChromaNeuronList[i].getWinnerCount() >= this->minWinnerCounter) {
-            //this->blueChromaNeuronList.erase(this->blueChromaNeuronList.begin() + i);
             tempBlueChromaNeuronList.push_back(this->blueChromaNeuronList[i]);
         }
     }
     this->blueChromaNeuronList = tempBlueChromaNeuronList;
     for (int i = 0; i < this->redChromaNeuronList.size(); i++) {
         if (this->redChromaNeuronList[i].getWinnerCount() >= this->minWinnerCounter) {
-            //this->redChromaNeuronList.erase(this->redChromaNeuronList.begin() + i);
             tempRedChromaNeuronList.push_back(this->redChromaNeuronList[i]);
         }
     }

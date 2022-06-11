@@ -65,7 +65,7 @@ SOM::Subframe generateSubframe(std::vector<SOM::Pixel> pixelArray, int dimX,
     for (int i = startPosX; i < startPosX + frameDimX; i++) {
         for (int j = startPosY; j < startPosY + frameDimY;
              j++, subArrayIndex++) {
-            pixelSubArray.push_back(pixelArray[i * (startPosY + frameDimY) + j]);
+            pixelSubArray.push_back(pixelArray[i * (dimY) + j]);
         }
     }
     std::vector<int> lumaParts(frameDimX * frameDimY);

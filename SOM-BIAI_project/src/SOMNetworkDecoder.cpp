@@ -56,7 +56,7 @@ std::vector<Pixel> SOMNetworkDecoder::decode() {
                     Pixel temp = Pixel(denormalizedLumaPixels[dataPixelIndex],
                               denormalizedRedChromaPixels[dataPixelIndex],
                               denormalizedBlueChromaPixels[dataPixelIndex]);
-                    result[k * (frameWidth + j) + l] = temp;
+                    result[k * (width) + l] = temp;
                     dataPixelIndex++;
                 }
             }
