@@ -12,12 +12,29 @@ class Image {
     std::vector<Pixel> pixelArray;
 
    public:
-    Image();
+    Image() { this->BGRImageHandle = cv::Mat();
+        this->YCbCrImageHandle = cv::Mat();
+    }
     Image(std::string filename);
     Image(cv::Mat BGRImageHandle);
-    void setBGRImageHandle(std::string filename);
+    Image(std::vector<Pixel> pixelArray) {
+        this->pixelArray = pixelArray;
+        this->BGRImageHandle = cv::Mat();
+        this->YCbCrImageHandle = cv::Mat();
+        transformPixelArrayToImage();
+        transformYCbCr2BGR();
+    }
+    void readImageFromFileName(std::string fileName);
+    void setBGRImageHandle(cv::Mat handle);
+    void setYCbCrImageHandle(cv::Mat handle);
+    cv::Mat getBGRImageHandle();
+    cv::Mat getYCbCrImageHandle();
     void transformBGR2YCbCr();
     void transformYCbCr2BGR();
     void saveToFile(std::string newFilename);
+    std::vector<Pixel> getPixelArray();
+    void setPixelArray(std::vector<Pixel> pixelArray);
+    void transformPixelArrayToImage();
+    void transformImageToPixelArray();
 };
 }  // namespace SOM

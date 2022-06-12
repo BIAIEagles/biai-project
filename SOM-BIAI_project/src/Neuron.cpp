@@ -24,9 +24,15 @@ void Neuron::weightsEvaluation(std::vector<double> input, double step) {
         weights[i] += step * (input[i] - weights[i]);
     }
 
-    this->weights = normalizeVector<double>(weights);
+    this->weights = normalizeVector(weights);
 }
 
 std::vector<double> Neuron::getWeights() { return this->weights; }
 
 unsigned long Neuron::getWinnerCount() { return this->winnerCount; }
+
+void Neuron::setWeights(std::vector<double> weights) { this->weights = weights; }
+
+bool neuronBelowThreshold(SOM::Neuron neuron) {
+    return neuron.getWinnerCount() < 10 ? true : false;
+}

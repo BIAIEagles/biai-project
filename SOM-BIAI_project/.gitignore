@@ -21,16 +21,18 @@ mono_crash.*
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-x64/
+#x64/
 x86/
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Bb]in/
+#[Bb]in/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+
+opencv_world343d.dll
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -467,19 +469,19 @@ $RECYCLE.BIN/
 *.pch
 
 # Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# *.so
+# *.dylib
+# *.dll
 
-# Fortran module files
-*.mod
-*.smod
+# # Fortran module files
+# *.mod
+# *.smod
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# # Compiled Static libraries
+# *.lai
+# *.la
+# *.a
+# *.lib
 
 # Executables
 *.exe
