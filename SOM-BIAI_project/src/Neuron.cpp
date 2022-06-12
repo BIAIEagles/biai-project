@@ -1,6 +1,7 @@
 #include "../include/Neuron.h"
 
 #include <math.h>
+#include <string>
 
 #include <algorithm>
 using namespace SOM;
@@ -31,7 +32,26 @@ std::vector<double> Neuron::getWeights() { return this->weights; }
 
 unsigned long Neuron::getWinnerCount() { return this->winnerCount; }
 
-void Neuron::setWeights(std::vector<double> weights) { this->weights = weights; }
+void SOM::Neuron::setWinnerCount(unsigned long winnerCount) {
+    this->winnerCount = winnerCount;
+}
+
+void Neuron::setWeights(std::vector<double> weights) {
+    this->weights = weights;
+}
+
+std::string SOM::Neuron::serialize() {
+    std::string result;
+    result += std::to_string(this->winnerCount);
+    result += ";";
+    for (auto weight : this->weights) {
+        result += std::to_string(weight);
+        result += ";";
+    }
+    //result.pop_back();
+    result += "\n";
+    return result;
+}
 
 bool neuronBelowThreshold(SOM::Neuron neuron) {
     return neuron.getWinnerCount() < 10 ? true : false;

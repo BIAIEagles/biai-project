@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 #include <iostream>
+#include <fstream>
 #include <string>
 
 #include "Dirent/dirent.h"
@@ -20,7 +21,8 @@
 #include "include/SOMNetworkEncoder.h"
 #include "include/SOMNetworkDecoder.h"
 #include "include/Misc.h"
-#include "Spinner.h"
+#include "include/Neuron.h"
+//#include "Spinner.h"
 
 using namespace std;
 
@@ -58,7 +60,7 @@ int main(void)
     const char *str = " ";
     SOM::Image image;
 
-
+    bool trainingCheckbox = true;
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         /* Render here */
@@ -76,6 +78,8 @@ int main(void)
         if (ImGui::Button("Import image..."))
             ImGuiFileDialog::Instance()->OpenDialog(
                 "ChooseFileDlgKey", "Choose File", ".jpg,.jpeg", ".");
+
+        ImGui::Checkbox("Train network", &trainingCheckbox);
 
         // display
         if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
@@ -102,7 +106,7 @@ int main(void)
 
         if (ImGui::Button("Run SOM & compress the image")) 
         {
-            ImGui::ProgressBar(0, ImVec2(0.0f, 0.0f));
+            //ImGui::ProgressBar(0, ImVec2(0.0f, 0.0f));
             image.transformImageToPixelArray();
 
             SOM::SOMNetwork network =
@@ -114,22 +118,148 @@ int main(void)
 
             std::vector<SOM::Subframe> trainingSet;
             std::vector<SOM::Subframe> resultTrSetTemp;
-
             std::vector<std::vector<SOM::Subframe>> framesList =
                 convertPixelArrayToSubframes(
                     image.getPixelArray(), image.getYCbCrImageHandle().cols,
                     image.getYCbCrImageHandle().rows, 8, 8);
-            for (int i = 0; i < framesList.size(); i++) {
-                for (int j = 0; j < framesList[i].size(); j++) {
-                    trainingSet.push_back(framesList[i][j]);
+            bool training = trainingCheckbox;
+
+            if (training) {
+
+                for (int i = 0; i < framesList.size(); i++) {
+                    for (int j = 0; j < framesList[i].size(); j++) {
+                        trainingSet.push_back(framesList[i][j]);
+                    }
                 }
-            }
-            for (int i = 0; i < 6; i++) {
-                for (auto &frame : trainingSet) {
-                    network.processFrame(frame);
+
+                /* std::vector<SOM::Subframe> randomSubframes =
+                    generateRandomSubframes();
+
+                for (auto frame : randomSubframes) {
+                    trainingSet.push_back(frame);
+                } */
+                
+
+                for (int i = 0; i < 1; i++) {
+                    for (auto &frame : trainingSet) {
+                        network.processFrame(frame);
+                    }
                 }
+
+                network.purgeDeadNeurons();
+
+                std::ofstream lumaNeuronsFile("lumaNeuronsValues.csv");
+                std::ofstream redChromaNeuronsFile(
+                    "redChromaNeuronsValues.csv");
+                std::ofstream blueChromaNeuronsFile(
+                    "blueChromaNeuronsValues.csv");
+
+                for (auto neuron : network.getLumaNeurons()) {
+                    lumaNeuronsFile << neuron.serialize();
+                }
+
+                for (auto neuron : network.getRedChromaNeurons()) {
+                    redChromaNeuronsFile << neuron.serialize();
+                }
+
+                for (auto neuron : network.getBlueChromaNeurons()) {
+                    blueChromaNeuronsFile << neuron.serialize();
+                }
+
+                lumaNeuronsFile.close();
+                redChromaNeuronsFile.close();
+                blueChromaNeuronsFile.close();
+            } else {
+                std::ifstream lumaNeuronsFile("lumaNeuronsValues.csv");
+                std::ifstream redChromaNeuronsFile(
+                    "redChromaNeuronsValues.csv");
+                std::ifstream blueChromaNeuronsFile(
+                    "blueChromaNeuronsValues.csv");
+
+                std::vector<SOM::Neuron> lumaNeuronsList;
+                std::vector<SOM::Neuron> redChromaNeuronsList;
+                std::vector<SOM::Neuron> blueChromaNeuronsList;
+
+                std::string buffer;
+            std:
+                string delimiter = ";";
+
+                while (getline(lumaNeuronsFile, buffer)) {
+                    size_t pos = 0;
+                    std::vector<double> weights;
+                    unsigned long winnerCounter = 0;
+                    std::string token;
+                    int counter = 0;
+                    while ((pos = buffer.find(delimiter)) !=
+                           std::string::npos) {
+                        token = buffer.substr(0, pos);
+                        buffer.erase(0, pos + delimiter.length());
+                        if (counter == 0) {
+                            winnerCounter = atol(token.c_str());
+                        } else {
+                            double temp = atof(token.c_str());
+                            weights.push_back(temp);
+                        }
+                        counter++;
+                    }
+                    SOM::Neuron neuron(weights);
+                    neuron.setWinnerCount(winnerCounter);
+                    lumaNeuronsList.push_back(neuron);
+                }
+
+                while (getline(redChromaNeuronsFile, buffer)) {
+                    size_t pos = 0;
+                    std::vector<double> weights;
+                    unsigned long winnerCounter = 0;
+                    std::string token;
+                    int counter = 0;
+                    while ((pos = buffer.find(delimiter)) !=
+                           std::string::npos) {
+                        token = buffer.substr(0, pos);
+                        buffer.erase(0, pos + delimiter.length());
+                        if (counter == 0) {
+                            winnerCounter = atol(token.c_str());
+                        } else {
+                            double temp = atof(token.c_str());
+                            weights.push_back(temp);
+                        }
+                        counter++;
+                    }
+                    SOM::Neuron neuron(weights);
+                    neuron.setWinnerCount(winnerCounter);
+                    redChromaNeuronsList.push_back(neuron);
+                }
+                while (getline(blueChromaNeuronsFile, buffer)) {
+                    size_t pos = 0;
+                    std::vector<double> weights;
+                    unsigned long winnerCounter = 0;
+                    std::string token;
+                    int counter = 0;
+                    while ((pos = buffer.find(delimiter)) !=
+                           std::string::npos) {
+                        token = buffer.substr(0, pos);
+                        buffer.erase(0, pos + delimiter.length());
+                        if (counter == 0) {
+                            winnerCounter = atol(token.c_str());
+                        } else {
+                            double temp = atof(token.c_str());
+                            weights.push_back(temp);
+                        }
+                        counter++;
+                    }
+                    SOM::Neuron neuron(weights);
+                    neuron.setWinnerCount(winnerCounter);
+                    blueChromaNeuronsList.push_back(neuron);
+                }
+                lumaNeuronsFile.close();
+                redChromaNeuronsFile.close();
+                blueChromaNeuronsFile.close();
+                network.setLumaNeurons(lumaNeuronsList);
+                network.setRedChromaNeurons(redChromaNeuronsList);
+                network.setBlueChromaNeurons(blueChromaNeuronsList);
             }
-            network.purgeDeadNeurons();
+
+
             SOM::SOMNetworkEncoder encoder(network);
 
             std::vector<std::vector<SOM::SubframeCompressed>> encodedFrames =

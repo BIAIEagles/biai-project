@@ -66,7 +66,7 @@ void SOM::Image::transformPixelArrayToImage() {
     cv::Mat temp = cv::Mat();
     temp.create(400, 400, CV_8UC3);
     //cv::cvtColor(this->YCbCrImageHandle, temp, cv::COLOR_YCrCb2BGR, 3);
-    cv::imwrite("test_ycbcr.jpg", this->YCbCrImageHandle);
+    //cv::imwrite("test_ycbcr.jpg", this->YCbCrImageHandle);
     /* static uint8_t *bitmap;
     bitmap = (uint8_t *)malloc(this->pixelArray.size() * sizeof(uint8_t) * 3);
     if (bitmap == nullptr) {
