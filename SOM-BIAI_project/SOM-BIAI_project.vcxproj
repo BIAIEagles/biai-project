@@ -166,7 +166,6 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Spinner.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\Misc.cpp" />
     <ClCompile Include="src\Neuron.cpp" />
@@ -199,7 +198,6 @@
     <ClInclude Include="include\SOMNetworkEncoder.h" />
     <ClInclude Include="include\Subframe.h" />
     <ClInclude Include="include\SubframeCompressed.h" />
-    <ClInclude Include="Spinner.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

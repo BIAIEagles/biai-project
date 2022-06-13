@@ -180,3 +180,27 @@ std::vector<double> SOM::SOMNetwork::getRedChromaNeuronWeights(int index) {
 std::vector<double> SOM::SOMNetwork::getBlueChromaNeuronWeights(int index) {
     return this->blueChromaNeuronList[index].getWeights();
 }
+
+std::vector<Neuron> SOM::SOMNetwork::getLumaNeurons() {
+    return this->lumaNeuronList;
+}
+
+std::vector<Neuron> SOM::SOMNetwork::getRedChromaNeurons() {
+    return this->redChromaNeuronList;
+}
+
+std::vector<Neuron> SOM::SOMNetwork::getBlueChromaNeurons() {
+    return this->blueChromaNeuronList;
+}
+
+void SOM::SOMNetwork::setLumaNeurons(std::vector<Neuron> neuronList) {
+    this->lumaNeuronList = neuronList;
+}
+
+void SOM::SOMNetwork::setRedChromaNeurons(std::vector<Neuron> neuronList) {
+    this->redChromaNeuronList = neuronList;
+}
+
+void SOM::SOMNetwork::setBlueChromaNeurons(std::vector<Neuron> neuronList) {
+    this->blueChromaNeuronList = neuronList;
+}

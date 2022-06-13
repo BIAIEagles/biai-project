@@ -29,7 +29,7 @@ std::vector<SOM::Subframe> generateRandomSubframes() {
         }
     }
     std::vector<std::vector<SOM::Subframe>> frames2D =
-        convertPixelArrayToSubframes(pixelArray, 4096, 4096, 4, 4);
+        convertPixelArrayToSubframes(pixelArray, 800, 800, 8, 8);
     for (int i = 0; i < frames2D.size(); i++) {
         for (int j = 0; j < frames2D[i].size(); j++) {
             result.push_back(frames2D[i][j]);

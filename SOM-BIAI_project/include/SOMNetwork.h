@@ -26,5 +26,12 @@ class SOMNetwork {
     std::vector<double> getLumaNeuronWeights(int index);
     std::vector<double> getRedChromaNeuronWeights(int index);
     std::vector<double> getBlueChromaNeuronWeights(int index);
+
+    std::vector<Neuron> getLumaNeurons();
+    std::vector<Neuron> getRedChromaNeurons();
+    std::vector<Neuron> getBlueChromaNeurons();
+    void setLumaNeurons(std::vector<Neuron> neuronList);
+    void setRedChromaNeurons(std::vector<Neuron> neuronList);
+    void setBlueChromaNeurons(std::vector<Neuron> neuronList);
 };
 }  // namespace SOM
